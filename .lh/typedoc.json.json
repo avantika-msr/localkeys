@@ -1,0 +1,38 @@
+{
+    "sourceFile": "typedoc.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1760742899569,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760743430124,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,8 @@\n   \"$schema\": \"https://typedoc.org/schema.json\",\n   \"entryPoints\": [\"packages/cli/src/index.ts\"],\n   \"out\": \"docs/api\",\n   \"plugin\": [\"typedoc-plugin-markdown\", \"typedoc-vitepress-theme\"],\n-  \"theme\": \"typedoc-vitepress-theme\",\n   \"readme\": \"none\",\n-  \"entryPointStrategy\": \"resolve\"\n+  \"entryPointStrategy\": \"resolve\",\n+  \"docsRoot\": \"docs\"\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760743632035,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,10 @@\n {\n   \"$schema\": \"https://typedoc.org/schema.json\",\n-  \"entryPoints\": [\"packages/cli/src/index.ts\"],\n+  \"entryPoints\": [\n+    \"packages/cli/src/index.ts\",\n+    \"packages/runner-node/src/index.ts\"\n+  ],\n   \"out\": \"docs/api\",\n   \"plugin\": [\"typedoc-plugin-markdown\", \"typedoc-vitepress-theme\"],\n   \"readme\": \"none\",\n   \"entryPointStrategy\": \"resolve\",\n"
+                },
+                {
+                    "date": 1760743918053,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n   \"entryPoints\": [\n     \"packages/cli/src/index.ts\",\n     \"packages/runner-node/src/index.ts\"\n   ],\n-  \"out\": \"docs/api\",\n+  \"out\": \"docs/reference\",\n   \"plugin\": [\"typedoc-plugin-markdown\", \"typedoc-vitepress-theme\"],\n   \"readme\": \"none\",\n   \"entryPointStrategy\": \"resolve\",\n   \"docsRoot\": \"docs\"\n"
+                },
+                {
+                    "date": 1760753622182,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,6 +7,7 @@\n   \"out\": \"docs/reference\",\n   \"plugin\": [\"typedoc-plugin-markdown\", \"typedoc-vitepress-theme\"],\n   \"readme\": \"none\",\n   \"entryPointStrategy\": \"resolve\",\n-  \"docsRoot\": \"docs\"\n+  \"docsRoot\": \"docs\",\n+  \"tsconfig\": \"tsconfig.base.json\"\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760753765557,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,6 +8,6 @@\n   \"plugin\": [\"typedoc-plugin-markdown\", \"typedoc-vitepress-theme\"],\n   \"readme\": \"none\",\n   \"entryPointStrategy\": \"resolve\",\n   \"docsRoot\": \"docs\",\n-  \"tsconfig\": \"tsconfig.base.json\"\n+  \"tsconfig\": \"tsconfig.doc.json\"\n }\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1760742899569,
+            "name": "Commit-0",
+            "content": "{\n  \"$schema\": \"https://typedoc.org/schema.json\",\n  \"entryPoints\": [\"packages/cli/src/index.ts\"],\n  \"out\": \"docs/api\",\n  \"plugin\": [\"typedoc-plugin-markdown\", \"typedoc-vitepress-theme\"],\n  \"theme\": \"typedoc-vitepress-theme\",\n  \"readme\": \"none\",\n  \"entryPointStrategy\": \"resolve\"\n}"
+        }
+    ]
+}

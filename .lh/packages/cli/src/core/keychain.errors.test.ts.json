@@ -1,0 +1,30 @@
+{
+    "sourceFile": "packages/cli/src/core/keychain.errors.test.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1760749381386,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760749396077,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,5 +49,5 @@\n     await expect(keychain.delete(testKey)).rejects.toThrow(\n       'Failed to delete keychain entry'\n     );\n   });\n-});\n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760749408718,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n import { Entry } from '@napi-rs/keyring';\n import { describe, it, expect, vi, beforeEach } from 'vitest';\n-import { SystemKeychain } from '../keychain';\n \n describe('SystemKeychain Error Handling', () => {\n   let keychain: SystemKeychain;\n   const testKey = 'error-key';\n"
+                },
+                {
+                    "date": 1760749415932,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n import { Entry } from '@napi-rs/keyring';\n import { describe, it, expect, vi, beforeEach } from 'vitest';\n+import { SystemKeychain } from './keychain';\n \n describe('SystemKeychain Error Handling', () => {\n   let keychain: SystemKeychain;\n   const testKey = 'error-key';\n"
+                }
+            ],
+            "date": 1760749381386,
+            "name": "Commit-0",
+            "content": "import { Entry } from '@napi-rs/keyring';\nimport { describe, it, expect, vi, beforeEach } from 'vitest';\nimport { SystemKeychain } from '../keychain';\n\ndescribe('SystemKeychain Error Handling', () => {\n  let keychain: SystemKeychain;\n  const testKey = 'error-key';\n  const testValue = 'error-value';\n  const serviceName = 'test-service-errors';\n\n  beforeEach(() => {\n    keychain = new SystemKeychain(serviceName);\n  });\n\n  it('should throw a contextual error when get() fails', async () => {\n    const originalError = new Error('Underlying get failed');\n    vi.spyOn(Entry.prototype, 'getPassword').mockRejectedValue(originalError);\n\n    await expect(keychain.get(testKey)).rejects.toThrow(\n      'Failed to get keychain entry'\n    );\n    await expect(keychain.get(testKey)).rejects.to.have.property(\n      'cause',\n      originalError\n    );\n  });\n\n  it('should throw a contextual error when set() fails', async () => {\n    const originalError = new Error('Underlying set failed');\n    vi.spyOn(Entry.prototype, 'setPassword').mockImplementation(() => {\n      throw originalError;\n    });\n\n    await expect(keychain.set(testKey, testValue)).rejects.toThrow(\n      'Failed to set keychain entry'\n    );\n    await expect(keychain.set(testKey, testValue)).rejects.to.have.property(\n      'cause',\n      originalError\n    );\n  });\n\n  it('should throw a contextual error when delete() fails', async () => {\n    const originalError = new Error('Underlying delete failed');\n    vi.spyOn(Entry.prototype, 'deletePassword').mockImplementation(() => {\n      throw originalError;\n    });\n\n    await expect(keychain.delete(testKey)).rejects.toThrow(\n      'Failed to delete keychain entry'\n    );\n  });\n});\n"
+        }
+    ]
+}

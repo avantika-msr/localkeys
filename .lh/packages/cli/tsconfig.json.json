@@ -1,0 +1,110 @@
+{
+    "sourceFile": "packages/cli/tsconfig.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 23,
+            "patches": [
+                {
+                    "date": 1760728556852,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760728567548,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n   \"extends\": \"../../tsconfig.base.json\",\n   \"compilerOptions\": {\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n-    \"allowImportingTsExtensions\": true\n+    \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\"src/**/*\"],\n   \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n }\n"
+                },
+                {
+                    "date": 1760746135928,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,7 +4,7 @@\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n-  \"include\": [\"src/**/*\"],\n+  \"include\": [\"src/**/*\", \"__tests__/*.test.ts\", \"__tests__/**/*.test.ts\"],\n   \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n }\n"
+                },
+                {
+                    "date": 1760746146959,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,6 +5,8 @@\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\"src/**/*\", \"__tests__/*.test.ts\", \"__tests__/**/*.test.ts\"],\n-  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n+  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"],\n+  \"files\": [],\n+  \"references\": []\n }\n"
+                },
+                {
+                    "date": 1760746153812,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,7 @@\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n-  \"include\": [\"src/**/*\", \"__tests__/*.test.ts\", \"__tests__/**/*.test.ts\"],\n-  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"],\n-  \"files\": [],\n-  \"references\": []\n+  \"include\": [\"src/**/*\"],\n+  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n }\n"
+                },
+                {
+                    "date": 1760746164123,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,7 +4,9 @@\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n-  \"include\": [\"src/**/*\"],\n-  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n+  \"include\": [\"src/**/*\", \"__tests__/*.test.ts\", \"__tests__/**/*.test.ts\"],\n+  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"],\n+  \"files\": [],\n+  \"references\": []\n }\n"
+                },
+                {
+                    "date": 1760746171075,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,7 +6,5 @@\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\"src/**/*\", \"__tests__/*.test.ts\", \"__tests__/**/*.test.ts\"],\n   \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"],\n-  \"files\": [],\n-  \"references\": []\n }\n"
+                },
+                {
+                    "date": 1760746184203,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,6 +5,6 @@\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\"src/**/*\", \"__tests__/*.test.ts\", \"__tests__/**/*.test.ts\"],\n-  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"],\n+  \"exclude\": [\"node_modules\", \"dist\", \"build\", \"**/*.test.ts\"],\n }\n"
+                },
+                {
+                    "date": 1760746201448,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,6 +5,6 @@\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\"src/**/*\", \"__tests__/*.test.ts\", \"__tests__/**/*.test.ts\"],\n-  \"exclude\": [\"node_modules\", \"dist\", \"build\", \"**/*.test.ts\"],\n+  \"exclude\": [\"node_modules\", \"dist\", \"build\"],\n }\n"
+                },
+                {
+                    "date": 1760746235926,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,7 +4,13 @@\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n-  \"include\": [\"src/**/*\", \"__tests__/*.test.ts\", \"__tests__/**/*.test.ts\"],\n-  \"exclude\": [\"node_modules\", \"dist\", \"build\"],\n-}\n+  \"include\": [\n+    \"src/**/*\",\n+    \"__tests__/**/*\"\n+  ],\n+  \"exclude\": [\n+    \"node_modules\",\n+    \"dist\"\n+  ]\n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760746250307,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,11 @@\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\n     \"src/**/*\",\n-    \"__tests__/**/*\"\n+    \"__tests__/**/*\",\n+    \"__tests__/*.test.ts\",\n+    \n   ],\n   \"exclude\": [\n     \"node_modules\",\n     \"dist\"\n"
+                },
+                {
+                    "date": 1760746268818,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,7 +12,10 @@\n     \n   ],\n   \"exclude\": [\n     \"node_modules\",\n-    \"dist\"\n+    \"dist\",\n+    \"build\",\n+    \"coverage\",\n+    \"*.config.ts\"\n   ]\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760746276631,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,8 +14,7 @@\n   \"exclude\": [\n     \"node_modules\",\n     \"dist\",\n     \"build\",\n-    \"coverage\",\n-    \"*.config.ts\"\n+\n   ]\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760746300979,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,7 @@\n   ],\n   \"exclude\": [\n     \"node_modules\",\n     \"dist\",\n-    \"build\",\n-\n+    \"build\"\n   ]\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760746307265,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,16 +4,7 @@\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n-  \"include\": [\n-    \"src/**/*\",\n-    \"__tests__/**/*\",\n-    \"__tests__/*.test.ts\",\n-    \n-  ],\n-  \"exclude\": [\n-    \"node_modules\",\n-    \"dist\",\n-    \"build\"\n-  ]\n-}\n\\ No newline at end of file\n+  \"include\": [\"src/**/*\", \"__tests__/**/*\", \"__tests__/*.test.ts\"],\n+  \"exclude\": [\"node_modules\", \"dist\", \"build\"]\n+}\n"
+                },
+                {
+                    "date": 1760746316059,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,7 +4,7 @@\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n-  \"include\": [\"src/**/*\", \"__tests__/**/*\", \"__tests__/*.test.ts\"],\n-  \"exclude\": [\"node_modules\", \"dist\", \"build\"]\n+  \"include\": [\"src/**/*\"],\n+  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n }\n"
+                },
+                {
+                    "date": 1760746321619,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,7 +4,7 @@\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n-  \"include\": [\"src/**/*\"],\n+  \"include\": [\"src/**/*\", \"test/**/*\"],\n   \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n }\n"
+                },
+                {
+                    "date": 1760746332049,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,7 +4,13 @@\n     \"outDir\": \"./dist\",\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n-  \"include\": [\"src/**/*\", \"test/**/*\"],\n-  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n-}\n+  \"include\": [\n+    \"src/**/*\",\n+    \"__tests__/**/*\"\n+  ],\n+  \"exclude\": [\n+    \"node_modules\",\n+    \"dist\"\n+  ]\n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760746356530,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\n     \"src/**/*\",\n-    \"__tests__/**/*\"\n+    \"../../__tests__/**/*\"\n   ],\n   \"exclude\": [\n     \"node_modules\",\n     \"dist\"\n"
+                },
+                {
+                    "date": 1760746533607,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n   },\n   \"include\": [\n     \"src/**/*\",\n     \"../../__tests__/**/*\"\n+    \"src/**/__tests__/**/*\"\n   ],\n   \"exclude\": [\n     \"node_modules\",\n     \"dist\"\n"
+                },
+                {
+                    "date": 1760746561296,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,8 @@\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\n     \"src/**/*\",\n-    \"../../__tests__/**/*\"\n     \"src/**/__tests__/**/*\"\n   ],\n   \"exclude\": [\n     \"node_modules\",\n"
+                },
+                {
+                    "date": 1760746578059,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\n     \"src/**/*\",\n-    \"src/**/__tests__/**/*\"\n+    \"../../__tests__/**/*\"\n   ],\n   \"exclude\": [\n     \"node_modules\",\n     \"dist\"\n"
+                },
+                {
+                    "date": 1760746876688,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,10 @@\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\n     \"src/**/*\",\n-    \"../../__tests__/**/*\"\n+    \"src/**/__tests__/**/*\"\n+    \"src/**/*\"\n   ],\n   \"exclude\": [\n     \"node_modules\",\n     \"dist\"\n"
+                },
+                {
+                    "date": 1760746886831,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,10 +5,8 @@\n     \"rootDir\": \"./src\",\n     \"allowImportingTsExtensions\": false\n   },\n   \"include\": [\n-    \"src/**/*\",\n-    \"src/**/__tests__/**/*\"\n     \"src/**/*\"\n   ],\n   \"exclude\": [\n     \"node_modules\",\n"
+                }
+            ],
+            "date": 1760728556852,
+            "name": "Commit-0",
+            "content": "{\n  \"extends\": \"../../tsconfig.base.json\",\n  \"compilerOptions\": {\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\",\n    \"allowImportingTsExtensions\": true\n  },\n  \"include\": [\"src/**/*\"],\n  \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"]\n}\n"
+        }
+    ]
+}

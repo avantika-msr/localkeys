@@ -1,0 +1,18 @@
+{
+    "sourceFile": "tsconfig.doc.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1760753751663,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1760753751663,
+            "name": "Commit-0",
+            "content": "{\n  \"$schema\": \"https://json.schemastore.org/tsconfig\",\n  \"extends\": \"./tsconfig.base.json\",\n  \"compilerOptions\": {\n    \"noEmit\": true\n  },\n  \"include\": [\n    \"packages/cli/src/**/*\",\n    \"packages/runner-node/src/**/*\"\n  ],\n  \"exclude\": [\n    \"**/*.test.ts\",\n    \"**/*.spec.ts\",\n    \"**/dist/**\",\n    \"**/node_modules/**\"\n  ]\n}"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "packages/cli/src/index.ts",
+    "packages/runner-node/src/index.ts"
+  ],
+  "out": "docs/reference",
+  "plugin": ["typedoc-plugin-markdown", "typedoc-vitepress-theme"],
+  "readme": "none",
+  "entryPointStrategy": "resolve",
+  "docsRoot": "docs",
+  "tsconfig": "tsconfig.doc.json"
+}

@@ -1,0 +1,22 @@
+{
+    "sourceFile": "packages/cli/src/types/index.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1760755592224,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760755610925,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n  * This module provides type definitions and schemas for interacting with the system keychain.\n  * It includes types for valid keys and values, ensuring they conform to expected formats.\n  */\n \n-import { DefaultKeyChainValueSchema, KeyChainKeySchema } from './types.schema';\n+import { DefaultKeyChainValueSchema, KeyChainKeySchema, PackageNameSchema } from './types.schema';\n import { z } from 'zod';\n \n /**\n  * Type representing a valid key for the system keychain.\n@@ -39,5 +39,11 @@\n  * @public\n  */\n export type TKeyChainValue = z.infer<typeof DefaultKeyChainValueSchema>;\n \n+/**\n+ * Type representing a valid package name for the system keychain.\n+ * Derived from the {@link PackageNameSchema}.\n+ * @public\n+ */\n+export type TPackageName = z.infer<typeof PackageNameSchema>;\n \n"
+                }
+            ],
+            "date": 1760755592224,
+            "name": "Commit-0",
+            "content": "/**\n * Types and schemas for the **LocalKeys cli** package.\n *\n * @module @localkeys/cli/types\n *\n * @file types/index.ts\n * @fileOverview Type definitions and schemas for the **LocalKeys cli** package.\n * @public\n *\n * @summary\n * This module contains type definitions and schemas related to the system keychain functionality.\n * It defines types for valid keys and values used in the keychain, ensuring they adhere to specified formats.\n *\n * @description\n * This module provides type definitions for the system keychain used in the **LocalKeys cli** package.\n * It includes types for valid keys and values, derived from Zod schemas that enforce constraints on their formats.\n * These types ensure that any interaction with the keychain adheres to expected standards, promoting data integrity and security.\n *\n * @license MIT\n * @author [avantika-msr](http://www.github.com/avantika-msr)\n *\n * @remarks\n * This module provides type definitions and schemas for interacting with the system keychain.\n * It includes types for valid keys and values, ensuring they conform to expected formats.\n */\n\nimport { DefaultKeyChainValueSchema, KeyChainKeySchema } from './types.schema';\nimport { z } from 'zod';\n\n/**\n * Type representing a valid key for the system keychain.\n * Derived from the {@link KeyChainKeySchema}.\n * @public\n */\nexport type TKeyChainKey = z.infer<typeof KeyChainKeySchema>;\n/**\n * Type representing a valid value for the system keychain.\n * Derived from the {@link DefaultKeyChainValueSchema}.\n * @public\n */\nexport type TKeyChainValue = z.infer<typeof DefaultKeyChainValueSchema>;\n\n\n"
+        }
+    ]
+}

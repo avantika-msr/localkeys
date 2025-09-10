@@ -1,0 +1,58 @@
+{
+    "sourceFile": "vitest.config.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 10,
+            "patches": [
+                {
+                    "date": 1760729653459,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760745385332,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,14 @@\n         branches: 80,\n         statements: 80,\n       },\n     },\n-    include: ['**/__tests__/**/*.test.ts', '**/*.test.ts', '**/*.spec.ts'],\n+    include: [\n+  '**/__tests__/**/*.test.ts',\n+  '**/__tests__/*.test.ts',\n+  '**/*.test.ts',\n+  '**/*.spec.ts',\n+],\n     exclude: ['node_modules', 'dist', 'build'],\n     testTimeout: 10000,\n     hookTimeout: 10000,\n     teardownTimeout: 10000,\n"
+                },
+                {
+                    "date": 1760745393322,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,43 @@\n+import { defineConfig } from 'vitest/config';\n+\n+export default defineConfig({\n+  test: {\n+    globals: true,\n+    environment: 'node',\n+    coverage: {\n+      provider: 'v8',\n+      reporter: ['text', 'json', 'html', 'lcov'],\n+      exclude: [\n+        'node_modules/',\n+        'dist/',\n+        'build/',\n+        '**/*.config.ts',\n+        '**/*.config.js',\n+        '**/*.d.ts',\n+        '**/__tests__/**',\n+        '**/test-utils/**',\n+      ],\n+      all: true,\n+      thresholds: {\n+        lines: 80,\n+        functions: 80,\n+        branches: 80,\n+        statements: 80,\n+      },\n+    },\n+    include: [\n+      '**/__tests__/**/*.test.ts',\n+      '**/__tests__/*.test.ts',\n+      '**/*.test.ts',\n+      '**/*.spec.ts',\n+    ],\n+    exclude: ['node_modules', 'dist', 'build'],\n+    testTimeout: 10000,\n+    hookTimeout: 10000,\n+    teardownTimeout: 10000,\n+    isolate: true,\n+    passWithNoTests: true,\n+    watch: false,\n+    reporters: ['verbose'],\n+  },\n+});\n"
+                },
+                {
+                    "date": 1760745751982,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,14 +24,17 @@\n         branches: 80,\n         statements: 80,\n       },\n     },\n-    include: [\n-      '**/__tests__/**/*.test.ts',\n-      '**/__tests__/*.test.ts',\n-      '**/*.test.ts',\n-      '**/*.spec.ts',\n-    ],\n+    test: {\n+  include: [\n+    '__tests__/*.test.ts',\n+    '__tests__/**/*.test.ts',\n+    '**/*.test.ts',\n+    '**/*.spec.ts',\n+  ],\n+  // ...rest unchanged\n+}\n     exclude: ['node_modules', 'dist', 'build'],\n     testTimeout: 10000,\n     hookTimeout: 10000,\n     teardownTimeout: 10000,\n@@ -40,47 +43,4 @@\n     watch: false,\n     reporters: ['verbose'],\n   },\n });\n-import { defineConfig } from 'vitest/config';\n-\n-export default defineConfig({\n-  test: {\n-    globals: true,\n-    environment: 'node',\n-    coverage: {\n-      provider: 'v8',\n-      reporter: ['text', 'json', 'html', 'lcov'],\n-      exclude: [\n-        'node_modules/',\n-        'dist/',\n-        'build/',\n-        '**/*.config.ts',\n-        '**/*.config.js',\n-        '**/*.d.ts',\n-        '**/__tests__/**',\n-        '**/test-utils/**',\n-      ],\n-      all: true,\n-      thresholds: {\n-        lines: 80,\n-        functions: 80,\n-        branches: 80,\n-        statements: 80,\n-      },\n-    },\n-    include: [\n-  '**/__tests__/**/*.test.ts',\n-  '**/__tests__/*.test.ts',\n-  '**/*.test.ts',\n-  '**/*.spec.ts',\n-],\n-    exclude: ['node_modules', 'dist', 'build'],\n-    testTimeout: 10000,\n-    hookTimeout: 10000,\n-    teardownTimeout: 10000,\n-    isolate: true,\n-    passWithNoTests: true,\n-    watch: false,\n-    reporters: ['verbose'],\n-  },\n-});\n"
+                },
+                {
+                    "date": 1760745763264,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,17 +24,14 @@\n         branches: 80,\n         statements: 80,\n       },\n     },\n-    test: {\n-  include: [\n+     include: [\n     '__tests__/*.test.ts',\n     '__tests__/**/*.test.ts',\n     '**/*.test.ts',\n     '**/*.spec.ts',\n   ],\n-  // ...rest unchanged\n-}\n     exclude: ['node_modules', 'dist', 'build'],\n     testTimeout: 10000,\n     hookTimeout: 10000,\n     teardownTimeout: 10000,\n"
+                },
+                {
+                    "date": 1760746542143,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,14 +24,15 @@\n         branches: 80,\n         statements: 80,\n       },\n     },\n-     include: [\n-    '__tests__/*.test.ts',\n-    '__tests__/**/*.test.ts',\n-    '**/*.test.ts',\n-    '**/*.spec.ts',\n-  ],\n+    include: [\n+      '__tests__/*.test.ts',\n+      '__tests__/**/*.test.ts',\n+      '**/*.test.ts',\n+      '**/*.spec.ts',\n+    ],\n+    include: ['packages/**/*.test.ts'],\n     exclude: ['node_modules', 'dist', 'build'],\n     testTimeout: 10000,\n     hookTimeout: 10000,\n     teardownTimeout: 10000,\n"
+                },
+                {
+                    "date": 1760746561124,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,14 +24,8 @@\n         branches: 80,\n         statements: 80,\n       },\n     },\n-    include: [\n-      '__tests__/*.test.ts',\n-      '__tests__/**/*.test.ts',\n-      '**/*.test.ts',\n-      '**/*.spec.ts',\n-    ],\n     include: ['packages/**/*.test.ts'],\n     exclude: ['node_modules', 'dist', 'build'],\n     testTimeout: 10000,\n     hookTimeout: 10000,\n"
+                },
+                {
+                    "date": 1760746577990,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,14 @@\n         branches: 80,\n         statements: 80,\n       },\n     },\n-    include: ['packages/**/*.test.ts'],\n+    include: [\n+      '__tests__/*.test.ts',\n+      '__tests__/**/*.test.ts',\n+      '**/*.test.ts',\n+      '**/*.spec.ts',\n+    ],\n     exclude: ['node_modules', 'dist', 'build'],\n     testTimeout: 10000,\n     hookTimeout: 10000,\n     teardownTimeout: 10000,\n"
+                },
+                {
+                    "date": 1760746645371,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,14 +24,10 @@\n         branches: 80,\n         statements: 80,\n       },\n     },\n-    include: [\n-      '__tests__/*.test.ts',\n-      '__tests__/**/*.test.ts',\n-      '**/*.test.ts',\n-      '**/*.spec.ts',\n-    ],\n+    include: ['packages/**/*.test.ts'],\n+    include: ['src/**/*.test.ts'],\n     exclude: ['node_modules', 'dist', 'build'],\n     testTimeout: 10000,\n     hookTimeout: 10000,\n     teardownTimeout: 10000,\n"
+                },
+                {
+                    "date": 1760746666508,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,38 @@\n+import { defineConfig } from 'vitest/config';\n+\n+export default defineConfig({\n+  test: {\n+    globals: true,\n+    environment: 'node',\n+    coverage: {\n+      provider: 'v8',\n+      reporter: ['text', 'json', 'html', 'lcov'],\n+      exclude: [\n+        'node_modules/',\n+        'dist/',\n+        'build/',\n+        '**/*.config.ts',\n+        '**/*.config.js',\n+        '**/*.d.ts',\n+        '**/__tests__/**',\n+        '**/test-utils/**',\n+      ],\n+      all: true,\n+      thresholds: {\n+        lines: 80,\n+        functions: 80,\n+        branches: 80,\n+        statements: 80,\n+      },\n+    },\n+    include: ['src/**/*.test.ts'],\n+    exclude: ['node_modules', 'dist', 'build'],\n+    testTimeout: 10000,\n+    hookTimeout: 10000,\n+    teardownTimeout: 10000,\n+    isolate: true,\n+    passWithNoTests: true,\n+    watch: false,\n+    reporters: ['verbose'],\n+  },\n+});\n"
+                },
+                {
+                    "date": 1760747746885,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,9 +24,9 @@\n         branches: 80,\n         statements: 80,\n       },\n     },\n-    include: ['src/**/*.test.ts'],\n+    include: ['**/__tests__/**/*.test.ts', '**/*.test.ts'],\n     exclude: ['node_modules', 'dist', 'build'],\n     testTimeout: 10000,\n     hookTimeout: 10000,\n     teardownTimeout: 10000,\n@@ -35,43 +35,4 @@\n     watch: false,\n     reporters: ['verbose'],\n   },\n });\n-import { defineConfig } from 'vitest/config';\n-\n-export default defineConfig({\n-  test: {\n-    globals: true,\n-    environment: 'node',\n-    coverage: {\n-      provider: 'v8',\n-      reporter: ['text', 'json', 'html', 'lcov'],\n-      exclude: [\n-        'node_modules/',\n-        'dist/',\n-        'build/',\n-        '**/*.config.ts',\n-        '**/*.config.js',\n-        '**/*.d.ts',\n-        '**/__tests__/**',\n-        '**/test-utils/**',\n-      ],\n-      all: true,\n-      thresholds: {\n-        lines: 80,\n-        functions: 80,\n-        branches: 80,\n-        statements: 80,\n-      },\n-    },\n-    include: ['packages/**/*.test.ts'],\n-    include: ['src/**/*.test.ts'],\n-    exclude: ['node_modules', 'dist', 'build'],\n-    testTimeout: 10000,\n-    hookTimeout: 10000,\n-    teardownTimeout: 10000,\n-    isolate: true,\n-    passWithNoTests: true,\n-    watch: false,\n-    reporters: ['verbose'],\n-  },\n-});\n"
+                }
+            ],
+            "date": 1760729653459,
+            "name": "Commit-0",
+            "content": "import { defineConfig } from 'vitest/config';\n\nexport default defineConfig({\n  test: {\n    globals: true,\n    environment: 'node',\n    coverage: {\n      provider: 'v8',\n      reporter: ['text', 'json', 'html', 'lcov'],\n      exclude: [\n        'node_modules/',\n        'dist/',\n        'build/',\n        '**/*.config.ts',\n        '**/*.config.js',\n        '**/*.d.ts',\n        '**/__tests__/**',\n        '**/test-utils/**',\n      ],\n      all: true,\n      thresholds: {\n        lines: 80,\n        functions: 80,\n        branches: 80,\n        statements: 80,\n      },\n    },\n    include: ['**/__tests__/**/*.test.ts', '**/*.test.ts', '**/*.spec.ts'],\n    exclude: ['node_modules', 'dist', 'build'],\n    testTimeout: 10000,\n    hookTimeout: 10000,\n    teardownTimeout: 10000,\n    isolate: true,\n    passWithNoTests: true,\n    watch: false,\n    reporters: ['verbose'],\n  },\n});\n"
+        }
+    ]
+}

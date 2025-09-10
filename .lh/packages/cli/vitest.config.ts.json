@@ -1,0 +1,34 @@
+{
+    "sourceFile": "packages/cli/vitest.config.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 4,
+            "patches": [
+                {
+                    "date": 1760746787123,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760746802548,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,5 +3,5 @@\n \n export default defineConfig({\n   ...baseConfig,\n   // You can add package-specific test overrides here if needed\n-});\n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760747858084,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,6 +2,9 @@\n import { baseConfig } from '../../vitest.config.base';\n \n export default defineConfig({\n   ...baseConfig,\n-  // You can add package-specific test overrides here if needed\n-});\n\\ No newline at end of file\n+  test: {\n+    ...baseConfig.test,\n+    include: ['**/__tests__/**/*.test.ts', 'src/**/*.{test,spec}.ts'],\n+  },\n+});\n"
+                },
+                {
+                    "date": 1760747928769,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,6 +5,7 @@\n   ...baseConfig,\n   test: {\n     ...baseConfig.test,\n     include: ['**/__tests__/**/*.test.ts', 'src/**/*.{test,spec}.ts'],\n+    passWithNoTests: true,\n   },\n });\n"
+                },
+                {
+                    "date": 1760748398202,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,6 +6,6 @@\n   test: {\n     ...baseConfig.test,\n     include: ['**/__tests__/**/*.test.ts', 'src/**/*.{test,spec}.ts'],\n     passWithNoTests: true,\n-  },\n+  } as typeof baseConfig.test,\n });\n"
+                }
+            ],
+            "date": 1760746787123,
+            "name": "Commit-0",
+            "content": "import { defineConfig } from 'vitest/config';\nimport { baseConfig } from '../../vitest.config.base';\n\nexport default defineConfig({\n  ...baseConfig,\n  // You can add package-specific test overrides here if needed\n});\n"
+        }
+    ]
+}
