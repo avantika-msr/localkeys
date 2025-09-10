@@ -1,0 +1,5 @@
+{
+  "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+  "*.{json,md,yaml,yml}": ["prettier --write"],
+  "**/__tests__/**/*.{js,jsx,ts,tsx}": ["vitest run --passWithNoTests"]
+}
