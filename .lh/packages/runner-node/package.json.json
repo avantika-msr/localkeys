@@ -1,18 +1,22 @@
 {
-    "sourceFile": "packages/runner-node/package.json",
-    "activeCommit": 0,
-    "commits": [
+  "sourceFile": "packages/runner-node/package.json",
+  "activeCommit": 0,
+  "commits": [
+    {
+      "activePatchIndex": 1,
+      "patches": [
         {
-            "activePatchIndex": 0,
-            "patches": [
-                {
-                    "date": 1760739239422,
-                    "content": "Index: \n===================================================================\n--- \n+++ \n"
-                }
-            ],
-            "date": 1760739239422,
-            "name": "Commit-0",
-            "content": "{\n  \"name\": \"@localkeys/runner-node\",\n  \"version\": \"0.1.0\",\n  \"description\": \"LocalKeys Node.js runner for injecting secrets\",\n  \"license\": \"MIT\",\n  \"type\": \"module\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./dist/index.d.ts\",\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"build\": \"tsup\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"clean\": \"rm -rf dist node_modules .turbo\"\n  },\n  \"dependencies\": {\n    \"dotenv\": \"^16.3.1\",\n  },\n  \"devDependencies\": {\n    \"tsup\": \"^8.0.1\",\n    \"typescript\": \"^5.3.3\",\n    \"vitest\": \"^1.2.1\"\n  },\n  \"engines\": {\n    \"node\": \">=18.0.0\"\n  }\n}\n"
+          "date": 1760739239422,
+          "content": "Index: \n===================================================================\n--- \n+++ \n"
+        },
+        {
+          "date": 1760758382942,
+          "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,11 +17,12 @@\n     \"typecheck\": \"tsc --noEmit\",\n     \"clean\": \"rm -rf dist node_modules .turbo\"\n   },\n   \"dependencies\": {\n-    \"dotenv\": \"^16.3.1\",\n+    \"dotenv\": \"^16.3.1\"\n   },\n   \"devDependencies\": {\n+    \"@vitest/coverage-v8\": \"^1.2.1\",\n     \"tsup\": \"^8.0.1\",\n     \"typescript\": \"^5.3.3\",\n     \"vitest\": \"^1.2.1\"\n   },\n"
         }
-    ]
+      ],
+      "date": 1760739239422,
+      "name": "Commit-0",
+      "content": "{\n  \"name\": \"@localkeys/runner-node\",\n  \"version\": \"0.1.0\",\n  \"description\": \"LocalKeys Node.js runner for injecting secrets\",\n  \"license\": \"MIT\",\n  \"type\": \"module\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./dist/index.d.ts\",\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"build\": \"tsup\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"clean\": \"rm -rf dist node_modules .turbo\"\n  },\n  \"dependencies\": {\n    \"dotenv\": \"^16.3.1\",\n  },\n  \"devDependencies\": {\n    \"tsup\": \"^8.0.1\",\n    \"typescript\": \"^5.3.3\",\n    \"vitest\": \"^1.2.1\"\n  },\n  \"engines\": {\n    \"node\": \">=18.0.0\"\n  }\n}\n"
+    }
+  ]
 }
