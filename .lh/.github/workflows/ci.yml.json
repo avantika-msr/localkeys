@@ -1,0 +1,18 @@
+{
+  "sourceFile": ".github/workflows/ci.yml",
+  "activeCommit": 0,
+  "commits": [
+    {
+      "activePatchIndex": 0,
+      "patches": [
+        {
+          "date": 1760758242867,
+          "content": "Index: \n===================================================================\n--- \n+++ \n"
+        }
+      ],
+      "date": 1760758242867,
+      "name": "Commit-0",
+      "content": "name: ci\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\njobs:\n  test:\n    runs-on: ${{ matrix.os }}\n    strategy:\n      matrix:\n        os: [ubuntu-latest, macos-latest, windows-latest]\n        node-version: [18, 20]\n    steps:\n      - uses: actions/checkout@v4\n      - uses: pnpm/action-setup@v4\n        with:\n          version: 9\n      - uses: actions/setup-node@v4\n        with:\n          node-version: ${{ matrix.node-version }}\n          cache: 'pnpm'\n      - run: pnpm install --frozen-lockfile\n      - run: pnpm validate\n      - run: pnpm test:coverage\n      - name: Upload coverage to Codecov\n        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '18'\n        uses: codecov/codecov-action@v4\n        with:\n          token: ${{ secrets.CODECOV_TOKEN }}\n"
+    }
+  ]
+}

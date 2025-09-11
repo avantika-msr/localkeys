@@ -17,6 +17,7 @@
     "test": "pnpm -r --stream test",
     "test:watch": "pnpm -r --stream test:watch",
     "test:coverage": "pnpm -r --stream test:coverage",
+    "ci": "pnpm validate && pnpm test:coverage",
     "lint": "eslint . --max-warnings 0 --config eslint.config.mjs",
     "lint:errors": "eslint . --quiet --config eslint.config.mjs",
     "lint:fix": "eslint . --fix",
