@@ -3,7 +3,7 @@
   "activeCommit": 0,
   "commits": [
     {
-      "activePatchIndex": 1,
+      "activePatchIndex": 2,
       "patches": [
         {
           "date": 1760758242867,
@@ -12,6 +12,10 @@
         {
           "date": 1760758692216,
           "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,26 @@\n   pull_request:\n     branches: [main]\n \n jobs:\n-  test:\n+  # Quick feedback job (single platform)\n+  test-fast:\n+    runs-on: ubuntu-latest\n+    steps:\n+      - uses: actions/checkout@v4\n+      - uses: pnpm/action-setup@v4\n+        with:\n+          version: 9\n+      - uses: actions/setup-node@v4\n+        with:\n+          node-version: 18\n+          cache: 'pnpm'\n+      - run: pnpm install --frozen-lockfile\n+      - run: pnpm validate\n+\n+  # Comprehensive testing (multi-platform, runs on main branch only)\n+  test-comprehensive:\n+    if: github.ref == 'refs/heads/main'\n     runs-on: ${{ matrix.os }}\n     strategy:\n       matrix:\n         os: [ubuntu-latest, macos-latest, windows-latest]\n"
+        },
+        {
+          "date": 1760758812266,
+          "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,10 +12,8 @@\n     runs-on: ubuntu-latest\n     steps:\n       - uses: actions/checkout@v4\n       - uses: pnpm/action-setup@v4\n-        with:\n-          version: 9\n       - uses: actions/setup-node@v4\n         with:\n           node-version: 18\n           cache: 'pnpm'\n"
         }
       ],
       "date": 1760758242867,
