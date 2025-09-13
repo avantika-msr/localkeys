@@ -9,12 +9,19 @@ export default defineConfig({
   outExtension: () => ({ js: '.js' }),
   dts: true,
   clean: true,
-  sourcemap: false,
+  sourcemap: true,
   minify: false,
   target: 'node18',
   outDir: 'dist',
   splitting: false,
   shims: false,
-  bundle: false,
+  bundle: true, // Bundle all dependencies for CLI
   platform: 'node',
+  external: [
+    // Don't bundle native dependencies
+    '@napi-rs/keyring',
+  ],
+  noExternal: [
+    // Bundle everything else
+  ],
 });

@@ -1,1 +1,12 @@
-{"extends": "./tsconfig.json","include": ["**/*.config.ts", "**/*.config.js", "**/*.config.mjs", "vitest.config.ts", "vitest.workspace.ts", "packages/cli/tsup.config.ts", "packages/runner-node/tsup.config.ts"]}
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "**/*.config.ts",
+    "**/*.config.js",
+    "**/*.config.mjs",
+    "vitest.config.ts",
+    "vitest.workspace.ts",
+    "packages/cli/tsup.config.ts",
+    "packages/runner-node/tsup.config.ts"
+  ]
+}

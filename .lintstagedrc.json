@@ -1,5 +1,13 @@
 {
-  "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+  "*.{ts,tsx}": [
+    "eslint --fix --max-warnings 0 --no-warn-ignored",
+    "prettier --write"
+  ],
+  "*.{js,jsx,mjs,cjs}": [
+    "eslint --fix --max-warnings 0 --no-warn-ignored",
+    "prettier --write"
+  ],
   "*.{json,md,yaml,yml}": ["prettier --write"],
-  "**/__tests__/**/*.{js,jsx,ts,tsx}": ["vitest run --passWithNoTests"]
+  "package.json": ["prettier --write"],
+  "*.{ts,tsx,js,jsx}": ["vitest related --run --passWithNoTests"]
 }

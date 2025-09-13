@@ -24,7 +24,11 @@
  * It includes types for valid keys and values, ensuring they conform to expected formats.
  */
 
-import { DefaultKeyChainValueSchema, KeyChainKeySchema, PackageNameSchema } from './types.schema';
+import {
+  DefaultKeyChainValueSchema,
+  KeyChainKeySchema,
+  PackageNameSchema,
+} from './types.schema';
 import { z } from 'zod';
 
 /**
@@ -46,4 +50,3 @@ export type TKeyChainValue = z.infer<typeof DefaultKeyChainValueSchema>;
  * @public
  */
 export type TPackageName = z.infer<typeof PackageNameSchema>;
-

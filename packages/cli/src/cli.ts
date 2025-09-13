@@ -3,7 +3,9 @@
 import chalk from 'chalk';
 import { program } from 'commander';
 
-import { version } from './index.js';
+import { SystemKeychain } from './core/index.js';
+
+const version = '0.1.0';
 
 // Set up the main program
 program
@@ -35,27 +37,130 @@ program
   });
 
 program
-  .command('set <key> <value>')
+  .command('set <pkg> <key> <value>')
   .description('Store a secret in the OS keychain')
-  .action((key: string, _value: string) => {
-    console.info(chalk.blue(`🔐 Setting secret: ${key}`));
-    console.warn(chalk.yellow('⚠️  This command is not yet implemented'));
-    console.info(
-      chalk.dim('Secret storage will use OS keychain when implemented')
-    );
-  });
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .action(
+    (
+      pkg: string,
+      key: string,
+      value: string,
+      options: { verbose: boolean }
+    ) => {
+      if (options.verbose) {
+        console.info(chalk.dim('[Verbose] options:'), options);
+      }
 
-program
-  .command('get <key>')
-  .description('Retrieve a secret from the OS keychain')
-  .option('-j, --json', 'Output as JSON')
-  .action((key: string, options: { json?: boolean }) => {
-    console.info(chalk.blue(`🔍 Getting secret: ${key}`));
-    if (options.json) {
-      console.info(chalk.dim('Will output as JSON when implemented'));
+      if (pkg == undefined) {
+        console.error(
+          chalk.red('[Error] Package name is required to set a secret.')
+        );
+        process.exit(1);
+      }
+
+      const keyChain = new SystemKeychain(pkg);
+      keyChain
+        .set(key, value)
+        .then(() => {
+          if (options.verbose) {
+            console.info(
+              chalk.green(
+                `[Verbose] Successfully stored secret for key: ${key}`
+              )
+            );
+          }
+        })
+        .catch((err) => {
+          console.error(chalk.red('[Error] Failed to store secret:'), err);
+        });
     }
-    console.warn(chalk.yellow('⚠️  This command is not yet implemented'));
-  });
+  );
+
+/**
+ * Retrieve a secret from the OS keychain
+ * @command get <pkg> <key>
+ * @param pkg - The package name associated with the secret
+ * @param key - The key of the secret to retrieve
+ * @option -v, --verbose - Enable verbose logging
+ * @option -df, --defaultFallback <value> - Default value if secret not found
+ * @example
+ * ```bash
+ * localkeys get my-package API_KEY --verbose --defaultFallback "default_value"
+ * ```
+ * @remarks
+ * This command retrieves a secret stored in the OS keychain for the specified package and key.
+ * If the secret is not found, it can return a default fallback value if provided.
+ *
+ * @see {@link SystemKeychain} for the underlying keychain implementation.
+ */
+program
+  .command('get <pkg> <key>')
+  .description('Retrieve a secret from the OS keychain')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .option('-df, --defaultFallback <value>', 'Default value if secret not found')
+  .action(
+    (
+      pkg: string,
+      key: string,
+      options: { verbose: boolean; defaultFallback?: unknown }
+    ) => {
+      // Verbose logging
+      if (options.verbose) {
+        console.info(chalk.dim('[Verbose] options:'), options);
+      }
+      // Validate package name
+      if (pkg == undefined) {
+        // package name is required
+        console.error(
+          chalk.red('[Error] Package name is required to get a secret.')
+        );
+        process.exit(1);
+      }
+      if (options.verbose) {
+        console.info(chalk.blue(`[Verbose] Getting secret for key: ${key}`));
+      }
+      // Initialize SystemKeychain
+      const keyChain = new SystemKeychain(pkg);
+      // Retrieve the secret
+      keyChain
+        .get(key)
+        .then((key) => {
+          // Log the retrieved secret or fallback
+          if (key !== null) {
+            if (options.verbose) {
+              console.info(
+                chalk.green(`[Verbose] Retrieved secret for key: ${key}`)
+              );
+            }
+            console.info(chalk.dim(`${key}`));
+          }
+          // Handle missing secret with default fallback
+          else if (options.defaultFallback !== undefined) {
+            if (options.verbose) {
+              console.info(
+                chalk.yellow(
+                  `[Verbose] Secret for key "${key}" not found. Using default fallback value.`
+                )
+              );
+            }
+            console.info(chalk.dim(`${options.defaultFallback}`));
+          }
+          // No secret and no fallback
+          else {
+            if (options.verbose) {
+              console.warn(
+                chalk.yellow(
+                  `[Verbose] Secret for key "${key}" not found and no default fallback provided.`
+                )
+              );
+            }
+          }
+        })
+        .catch((err) => {
+          console.error(chalk.red('[Error] Failed to retrieve secret:'), err);
+        });
+    }
+  );
 
 program
   .command('list')

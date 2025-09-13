@@ -29,7 +29,11 @@
 import { Entry } from '@napi-rs/keyring';
 import * as console from 'node:console';
 import { TKeyChainKey, TKeyChainValue, TPackageName } from '../types';
-import { validateKey, validatePackageName, validateValue } from './keychain.validator';
+import {
+  validateKey,
+  validatePackageName,
+  validateValue,
+} from './keychain.validator';
 import { DefaultKeyChainValueSchema } from '../types/types.schema';
 
 /**
@@ -145,7 +149,7 @@ export class SystemKeychain implements IKeychainProvider {
   /**
    * Gets a value from the keychain.
    * @returns {Promise<string | null>} A promise that resolves to the value associated with the key, or null if not found.
-   * @throws 
+   * @throws
    * - {@link Error} Will throw an error if the key is not valid.
    * - Will **not** throw an error if the key is not found. Instead, it will return {@link null}.
    * @param key - The key to retrieve.
@@ -215,7 +219,7 @@ export class SystemKeychain implements IKeychainProvider {
    * Deletes a value from the keychain.
    *
    * @returns {Promise<void>} A promise that resolves when the value is deleted.
-   * @throws 
+   * @throws
    * - {@link Error} Will throw an error if the key is not valid.
    * - {@link Error} Rethrows any error encountered while deleting the underlying keychain entry.
    * @param key - The key to delete.
@@ -258,7 +262,7 @@ export class SystemKeychain implements IKeychainProvider {
    * @param key - The key to set.
    * @param value - The value to set.
    * @returns {Promise<void>} A promise that resolves when the value is set.
-   * @throws 
+   * @throws
    * - {@link Error} Will throw an error if the key is not valid.
    * - {@link Error} Will throw an error if the value is not valid.
    * - {@link Error} Rethrows any error encountered while storing the value in the underlying keychain entry.

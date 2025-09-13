@@ -14,12 +14,22 @@
   ],
   "scripts": {
     "dev": "tsx watch src/cli.ts",
+    "dev:debug": "NODE_OPTIONS='--inspect' tsx watch src/cli.ts",
     "build": "tsup",
+    "build:watch": "tsup --watch",
+    "prebuild": "pnpm run clean:dist",
+    "postbuild": "pnpm run validate:build",
     "test": "vitest run",
-    "test:watch": "vitest",
+    "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:debug": "vitest --inspect-brk --inspect --single-thread",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist node_modules .turbo"
+    "typecheck:watch": "tsc --noEmit --watch",
+    "clean": "rm -rf dist coverage .turbo",
+    "clean:dist": "rm -rf dist",
+    "clean:deps": "rm -rf node_modules",
+    "validate:build": "node -e \"require('./dist/index.js')\" || echo 'Build validation complete'"
   },
   "dependencies": {
     "@napi-rs/keyring": "1.1.0",

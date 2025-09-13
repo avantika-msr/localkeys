@@ -4,10 +4,7 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": [
-    "packages/cli/src/**/*",
-    "packages/runner-node/src/**/*"
-  ],
+  "include": ["packages/cli/src/**/*", "packages/runner-node/src/**/*"],
   "exclude": [
     "**/*.test.ts",
     "**/*.spec.ts",

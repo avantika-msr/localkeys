@@ -9,6 +9,12 @@ build/
 out/
 *.tsbuildinfo
 
+# Compiled TypeScript files in source directories
+# (prevent accidental commits of transpiled files)
+packages/*/src/**/*.js
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.js.map
+
 # Testing
 coverage/
 .nyc_output/
@@ -64,3 +70,5 @@ Desktop.ini
 *.pid
 *.seed
 *.pid.locktest change
+
+.lh/
