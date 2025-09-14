@@ -2,8 +2,8 @@
 
 import chalk from 'chalk';
 import { program } from 'commander';
-
-import { SystemKeychain } from './core/index.js';
+import { SystemKeychain } from './core';
+import { error, info, LogTag, verbose, warn } from './utils';
 
 const version = '0.1.0';
 
@@ -15,13 +15,11 @@ program
   .option('-v, --verbose', 'Enable verbose logging')
   .hook('preAction', (thisCommand) => {
     const options: { verbose?: boolean } = thisCommand.opts();
-    if (options.verbose) {
-      console.info(
-        chalk.dim(
-          `[LocalKeys v${version}] Running command: ${thisCommand.name()}`
-        )
-      );
-    }
+    verbose(
+      options.verbose === true,
+      LogTag.LOG,
+      `[LocalKeys v${version}] Running command: ${thisCommand.name()}`
+    );
   });
 
 // Placeholder commands that will be implemented
@@ -29,13 +27,27 @@ program
   .command('init')
   .description('Initialize LocalKeys in the current directory')
   .action(() => {
-    console.info(chalk.blue('🔒 Initializing LocalKeys...'));
-    console.warn(chalk.yellow('⚠️  This command is not yet implemented'));
-    console.info(
-      chalk.dim('See the implementation guide for development progress')
-    );
+    info(chalk.blue('Initializing LocalKeys...'));
+    warn(chalk.yellow('This command is not yet implemented'));
+    info(chalk.dim('See the implementation guide for development progress'));
   });
 
+/**
+ * Store a secret in the OS keychain
+ * @command set <pkg> <key> <value>
+ * @param pkg - The package name associated with the secret
+ * @param key - The key of the secret to store
+ * @param value - The value of the secret to store
+ * @option -v, --verbose - Enable verbose logging
+ * @example
+ * ```bash
+ * localkeys set my-package API_KEY abc123 --verbose
+ * ```
+ * @remarks
+ * This command stores a secret in the OS keychain for the specified package and key.
+ *
+ * @see {@link SystemKeychain} for the underlying keychain implementation.
+ */
 program
   .command('set <pkg> <key> <value>')
   .description('Store a secret in the OS keychain')
@@ -47,14 +59,10 @@ program
       value: string,
       options: { verbose: boolean }
     ) => {
-      if (options.verbose) {
-        console.info(chalk.dim('[Verbose] options:'), options);
-      }
+      verbose(options.verbose, LogTag.LOG, chalk.dim('Options: '), options);
 
       if (pkg == undefined) {
-        console.error(
-          chalk.red('[Error] Package name is required to set a secret.')
-        );
+        error('Package name is required to set a secret.');
         process.exit(1);
       }
 
@@ -62,16 +70,14 @@ program
       keyChain
         .set(key, value)
         .then(() => {
-          if (options.verbose) {
-            console.info(
-              chalk.green(
-                `[Verbose] Successfully stored secret for key: ${key}`
-              )
-            );
-          }
+          verbose(
+            options.verbose,
+            LogTag.SUCCESS,
+            `Stored secret for key: ${key}`
+          );
         })
         .catch((err) => {
-          console.error(chalk.red('[Error] Failed to store secret:'), err);
+          error('Failed to store secret:', err);
         });
     }
   );
@@ -105,20 +111,14 @@ program
       options: { verbose: boolean; defaultFallback?: unknown }
     ) => {
       // Verbose logging
-      if (options.verbose) {
-        console.info(chalk.dim('[Verbose] options:'), options);
-      }
+      verbose(options.verbose, LogTag.LOG, 'options:', options);
       // Validate package name
       if (pkg == undefined) {
         // package name is required
-        console.error(
-          chalk.red('[Error] Package name is required to get a secret.')
-        );
+        error('Package name is required to get a secret.');
         process.exit(1);
       }
-      if (options.verbose) {
-        console.info(chalk.blue(`[Verbose] Getting secret for key: ${key}`));
-      }
+      verbose(options.verbose, LogTag.LOG, `Getting secret for key: ${key}`);
       // Initialize SystemKeychain
       const keyChain = new SystemKeychain(pkg);
       // Retrieve the secret
@@ -127,37 +127,33 @@ program
         .then((key) => {
           // Log the retrieved secret or fallback
           if (key !== null) {
-            if (options.verbose) {
-              console.info(
-                chalk.green(`[Verbose] Retrieved secret for key: ${key}`)
-              );
-            }
-            console.info(chalk.dim(`${key}`));
+            verbose(
+              options.verbose,
+              LogTag.SUCCESS,
+              `Retrieved secret for key: ${key}`
+            );
+            info(chalk.dim(`${key}`));
           }
           // Handle missing secret with default fallback
           else if (options.defaultFallback !== undefined) {
-            if (options.verbose) {
-              console.info(
-                chalk.yellow(
-                  `[Verbose] Secret for key "${key}" not found. Using default fallback value.`
-                )
-              );
-            }
-            console.info(chalk.dim(`${options.defaultFallback}`));
+            verbose(
+              options.verbose,
+              LogTag.WARN,
+              `Secret for key "${key}" not found. Using default fallback value.`
+            );
+            info(chalk.dim(`${options.defaultFallback}`));
           }
           // No secret and no fallback
           else {
-            if (options.verbose) {
-              console.warn(
-                chalk.yellow(
-                  `[Verbose] Secret for key "${key}" not found and no default fallback provided.`
-                )
-              );
-            }
+            verbose(
+              options.verbose,
+              LogTag.WARN,
+              `Secret for key "${key}" not found and no default fallback provided.`
+            );
           }
         })
         .catch((err) => {
-          console.error(chalk.red('[Error] Failed to retrieve secret:'), err);
+          error('Failed to retrieve secret:', err);
         });
     }
   );
@@ -166,28 +162,26 @@ program
   .command('list')
   .description('List all stored secrets (keys only)')
   .action(() => {
-    console.info(chalk.blue('📋 Listing stored secrets...'));
-    console.warn(chalk.yellow('⚠️  This command is not yet implemented'));
+    info(chalk.blue('📋 Listing stored secrets...'));
+    warn(chalk.yellow('⚠️  This command is not yet implemented'));
   });
 
 program
   .command('status')
   .description('Show current LocalKeys status and configuration')
   .action(() => {
-    console.info(chalk.blue('📊 LocalKeys Status'));
-    console.info(chalk.green(`✅ Version: ${version}`));
-    console.info(chalk.green(`✅ Node.js: ${process.version}`));
-    console.info(
-      chalk.green(`✅ Platform: ${process.platform} ${process.arch}`)
-    );
-    console.warn(chalk.yellow('⚠️  Full functionality coming soon'));
+    info(chalk.blue('📊 LocalKeys Status'));
+    info(chalk.green(`✅ Version: ${version}`));
+    info(chalk.green(`✅ Node.js: ${process.version}`));
+    info(chalk.green(`✅ Platform: ${process.platform} ${process.arch}`));
+    warn(chalk.yellow('⚠️  Full functionality coming soon'));
 
     // Show development status
-    console.info(chalk.dim('\n📋 Implementation Progress:'));
-    console.info(chalk.dim('  🚧 Keychain integration (in progress)'));
-    console.info(chalk.dim('  ⏳ CLI commands'));
-    console.info(chalk.dim('  ⏳ Config validation'));
-    console.info(chalk.dim('  ⏳ Runtime runners'));
+    info(chalk.dim('\n📋 Implementation Progress:'));
+    info(chalk.dim('  🚧 Keychain integration (in progress)'));
+    info(chalk.dim('  ⏳ CLI commands'));
+    info(chalk.dim('  ⏳ Config validation'));
+    info(chalk.dim('  ⏳ Runtime runners'));
   });
 
 // Add help examples
