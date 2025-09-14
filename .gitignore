@@ -57,6 +57,11 @@ Desktop.ini
 *.temp
 .cache/
 .turbo/
+*.timestamp-*.mjs
+
+# VitePress
+docs/.vitepress/cache/
+docs/.vitepress/dist/
 
 # LocalKeys specific
 .localkeys/
