@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { SystemKeychain } from './core';
-import { error, info, LogTag, verbose, warn } from './utils';
-import { log } from './utils/logger/logger.utils';
+import { initAction } from './commands/init.action';
+import { setAction } from './commands/set.action';
+import { getAction } from './commands/get.action';
+import { delAction } from './commands/del.action';
+import { listAction } from './commands/list.action';
+import { validateAction } from './commands/validate.action';
+import { info, LogTag, verbose, warn } from './utils/logger';
 
 const version = '0.1.0';
 
@@ -22,151 +26,109 @@ program
     );
   });
 
-// Placeholder commands that will be implemented
+// Init command
 program
   .command('init')
   .description('Initialize LocalKeys in the current directory')
-  .action(() => {
-    info('Initializing LocalKeys...');
-    warn('This command is not yet implemented.');
-    info('See the implementation guide for development progress.');
+  .option(
+    '-t, --template <path>',
+    'Path to template file (relative or absolute)'
+  )
+  .option('-p, --package <name>', 'Package name (skips auto-detection)')
+  .option('-f, --force', 'Reinitialize if already initialized')
+  .action(async (options) => {
+    await initAction(options);
   });
 
 /**
  * Store a secret in the OS keychain
- * @command set <pkg> <key> <value>
- * @param pkg - The package name associated with the secret
+ * @command set <key> <value>
  * @param key - The key of the secret to store
  * @param value - The value of the secret to store
  * @option -v, --verbose - Enable verbose logging
+ * @option -o, --optional - Mark this secret as optional (default: required)
  * @example
  * ```bash
- * localkeys set my-package API_KEY abc123 --verbose
+ * localkeys set API_KEY abc123 --verbose
+ * localkeys set OPTIONAL_KEY value --optional
  * ```
  * @remarks
- * This command stores a secret in the OS keychain for the specified package and key.
+ * This command stores a secret in the OS keychain using the package name from config.
+ * By default, secrets are marked as required. Use --optional to mark them as optional.
  *
  * @see {@link SystemKeychain} for the underlying keychain implementation.
  */
 program
-  .command('set <pkg> <key> <value>')
+  .command('set <key> <value>')
   .description('Store a secret in the OS keychain')
   .option('-v, --verbose', 'Enable verbose logging', false)
+  .option(
+    '-o, --optional',
+    'Mark this secret as optional (default: required)',
+    false
+  )
   .action(
-    (
-      pkg: string,
+    async (
       key: string,
       value: string,
-      options: { verbose: boolean }
+      options: { verbose?: boolean; optional?: boolean }
     ) => {
-      verbose(options.verbose, LogTag.LOG, 'options:', options);
-      verbose(options.verbose, LogTag.LOG, 'pkg:', pkg);
-      verbose(options.verbose, LogTag.LOG, 'key:', key);
-      verbose(options.verbose, LogTag.LOG, 'value:', value);
-
-      if (pkg == undefined) {
-        error('Package name is required to set a secret.');
-        process.exit(1);
-      }
-
-      const keyChain = new SystemKeychain(pkg);
-      keyChain
-        .set(key, value)
-        .then(() => {
-          verbose(
-            options.verbose,
-            LogTag.SUCCESS,
-            `Stored secret for key: ${key}`
-          );
-        })
-        .catch((err) => {
-          error('Failed to store secret:', err);
-        });
+      await setAction(key, value, options);
     }
   );
 
 /**
  * Retrieve a secret from the OS keychain
- * @command get <pkg> <key>
- * @param pkg - The package name associated with the secret
+ * @command get <key>
  * @param key - The key of the secret to retrieve
  * @option -v, --verbose - Enable verbose logging
  * @option -df, --defaultFallback <value> - Default value if secret not found
  * @example
  * ```bash
- * localkeys get my-package API_KEY --verbose --defaultFallback "default_value"
+ * localkeys get API_KEY --verbose --defaultFallback "default_value"
  * ```
  * @remarks
- * This command retrieves a secret stored in the OS keychain for the specified package and key.
+ * This command retrieves a secret stored in the OS keychain using the package name from config.
  * If the secret is not found, it can return a default fallback value if provided.
  *
  * @see {@link SystemKeychain} for the underlying keychain implementation.
  */
 program
-  .command('get <pkg> <key>')
+  .command('get <key>')
   .description('Retrieve a secret from the OS keychain')
   .option('-v, --verbose', 'Enable verbose logging', false)
   .option('-df, --defaultFallback <value>', 'Default value if secret not found')
   .action(
-    (
-      pkg: string,
+    async (
       key: string,
-      options: { verbose: boolean; defaultFallback?: unknown }
+      options: { verbose?: boolean; defaultFallback?: unknown }
     ) => {
-      // Verbose logging
-      verbose(options.verbose, LogTag.LOG, 'options:', options);
-      // Validate package name
-      if (pkg == undefined) {
-        // package name is required
-        error('Package name is required to get a secret.');
-        process.exit(1);
-      }
-      verbose(options.verbose, LogTag.LOG, `Getting secret for key: ${key}`);
-      // Initialize SystemKeychain
-      const keyChain = new SystemKeychain(pkg);
-      // Retrieve the secret
-      keyChain
-        .get(key)
-        .then((value) => {
-          // Log the retrieved secret or fallback
-          if (value !== null) {
-            verbose(
-              options.verbose,
-              LogTag.SUCCESS,
-              `Retrieved secret for key: ${value}`
-            );
-            log(`${value}`);
-          }
-          // Handle missing secret with default fallback
-          else if (options.defaultFallback !== undefined) {
-            verbose(
-              options.verbose,
-              LogTag.WARN,
-              `Secret for key "${key}" not found. Using default fallback value.`
-            );
-            log(`${options.defaultFallback}`);
-          }
-          // No secret and no fallback
-          else {
-            verbose(
-              options.verbose,
-              LogTag.WARN,
-              `Secret for key "${key}" not found and no default fallback provided.`
-            );
-          }
-        })
-        .catch((err) => {
-          error('Failed to retrieve secret:', err);
-        });
+      await getAction(key, options);
     }
   );
 
 program
+  .command('del <key>')
+  .description('Delete a secret from the OS keychain')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .action(async (key: string, options: { verbose?: boolean }) => {
+    await delAction(key, options);
+  });
+
+program
   .command('list')
   .description('List all stored secrets (keys only)')
-  .action(() => {
-    info('Listing stored secrets...');
-    warn('This command is not yet implemented.');
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .action(async (options: { verbose: boolean }) => {
+    await listAction(options);
+  });
+
+program
+  .command('validate')
+  .description('Validate that all required secrets are present')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .action(async (options: { verbose?: boolean }) => {
+    await validateAction(options);
   });
 
 program
