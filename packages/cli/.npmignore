@@ -1,0 +1,39 @@
+# Source files
+src/
+*.test.ts
+*.spec.ts
+__tests__/
+__mocks__/
+
+# Config files
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+.eslintrc.*
+.prettierrc.*
+
+# Development files
+.turbo/
+coverage/
+.vitest/
+*.log
+*.tsbuildinfo
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+node_modules/
+*.map

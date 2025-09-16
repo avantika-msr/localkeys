@@ -100,3 +100,69 @@ export const PackageNameSchema = z
     message: 'Package name contains invalid characters',
   })
   .describe('System keychain package name');
+
+/**
+ * Schema for key metadata in the manifest.
+ * Contains the key name and whether it's required or optional.
+ * @remarks
+ * This schema represents metadata for a single secret key.
+ * @public
+ */
+export const KeyMetadataSchema = z.object({
+  name: KeyChainKeySchema,
+  required: z.boolean().default(true),
+});
+
+/**
+ * Schema for a package entry in the manifest.
+ * Contains the list of keys with metadata and the last updated timestamp.
+ * @remarks
+ * This schema represents a single package's entry in the manifest file.
+ * @public
+ */
+export const PackageEntrySchema = z.object({
+  keys: z.array(KeyMetadataSchema),
+  lastUpdated: z.string().datetime(),
+});
+
+/**
+ * Schema for validating the entire manifest file structure.
+ * Maps package names to their respective package entries.
+ * @remarks
+ * This schema is used to validate the complete manifest stored in ~/.localkeys/manifest.json
+ * @example
+ * ```ts
+ * import { ManifestSchema } from './types.schema';
+ *
+ * const manifest = {
+ *   packages: {
+ *     "my-app": {
+ *       keys: ["API_KEY", "DATABASE_URL"],
+ *       lastUpdated: "2025-10-19T10:30:00.000Z"
+ *     }
+ *   }
+ * };
+ * const parsedManifest = ManifestSchema.parse(manifest); // succeeds
+ * ```
+ * @see {@link PackageEntrySchema} for the package entry schema.
+ * @public
+ */
+export const ManifestSchema = z.object({
+  packages: z.record(z.string(), PackageEntrySchema),
+});
+
+/**
+ * Schema for LocalKeys configuration file
+ * Stored in .localkeys/config.json
+ * @remarks
+ * This schema validates the project-level configuration for LocalKeys
+ * @public
+ */
+export const LocalKeysConfigSchema = z.object({
+  package: PackageNameSchema,
+  templateFile: z
+    .string()
+    .min(1, { message: 'Template file path cannot be empty' }),
+  manifestVersion: z.string().default('1.0'),
+  defaultEnvironment: z.string().default('development'),
+});
