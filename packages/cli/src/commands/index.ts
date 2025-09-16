@@ -4,4 +4,6 @@ export { setAction } from './set.action';
 export { getAction } from './get.action';
 export { delAction } from './del.action';
 export { listAction } from './list.action';
-export { validateAction } from './validate.action';
+export { checkAction } from './check.action';
+export { exportAction } from './export.action';
+export { migrateAction } from './migrate.action';

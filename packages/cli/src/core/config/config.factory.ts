@@ -41,6 +41,7 @@ export class ConfigFactory {
       package: packageName,
       templateFile,
       manifestVersion: '1.0',
+      defaultEnvironment: 'development',
     });
   }
 
@@ -69,6 +70,7 @@ export class ConfigFactory {
       package: packageName,
       templateFile,
       manifestVersion: '1.0',
+      defaultEnvironment: 'development',
     });
   }
 

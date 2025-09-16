@@ -120,19 +120,22 @@ export class SystemKeychain implements IKeychainProvider {
   private readonly packageName: TPackageName;
   private readonly manifest: ManifestManager;
   private readonly projectRoot: string;
+  private readonly defaultEnvironment: string;
 
   /**
    * Creates an instance of SystemKeychain.
    * @param packageName - The package name used as the service identifier in the keychain.
    * @param projectRoot - Project root directory (defaults to process.cwd())
+   * @param defaultEnvironment - Default environment name (defaults to 'development')
    *
    * @example
    * ```ts
-   * const keychain = new SystemKeychain('my-package-name', '/path/to/project');
+   * const keychain = new SystemKeychain('my-package-name', '/path/to/project', 'production');
    * ```
    * @remarks
-   * The package name is used to namespace the keychain entries, ensuring that they do not conflict
-   * with entries from other applications. The project root is used to locate the project-local
+   * The package name and environment are used to namespace the keychain entries in the format
+   * `{package}:{environment}:{key}`, ensuring that they do not conflict with entries from
+   * other applications or environments. The project root is used to locate the project-local
    * manifest file at .localkeys/manifest.json.
    *
    * @see {@link set} to store values in the keychain.
@@ -140,7 +143,11 @@ export class SystemKeychain implements IKeychainProvider {
    * @see {@link list} to list all keys in the keychain (now supported via manifest).
    * @see {@link delete} to remove values from the keychain.
    */
-  constructor(packageName: string, projectRoot: string = process.cwd()) {
+  constructor(
+    packageName: string,
+    projectRoot: string = process.cwd(),
+    defaultEnvironment: string = 'development'
+  ) {
     // validate package name
     if (!validatePackageName(packageName)) {
       // throw error if package name is invalid
@@ -151,8 +158,22 @@ export class SystemKeychain implements IKeychainProvider {
     this.packageName = packageName;
     // set project root
     this.projectRoot = projectRoot;
+    // set default environment
+    this.defaultEnvironment = defaultEnvironment;
     // initialize manifest manager with project root
     this.manifest = new ManifestManager(projectRoot);
+  }
+
+  /**
+   * Creates a namespaced key in the format {package}:{environment}:{key}
+   * @param key - The key name
+   * @param environment - Optional environment (defaults to defaultEnvironment)
+   * @returns Namespaced key string
+   * @private
+   */
+  private createNamespacedKey(key: string, environment?: string): string {
+    const env = environment || this.defaultEnvironment;
+    return `${this.packageName}:${env}:${key}`;
   }
 
   /**
@@ -178,7 +199,7 @@ export class SystemKeychain implements IKeychainProvider {
    * @see {@link list} to list all keys in the keychain (not supported).
    * @see {@link clear} to clear all entries in the keychain (not supported).
    */
-  async get(key: TKeyChainKey): Promise<string | null> {
+  async get(key: TKeyChainKey, environment?: string): Promise<string | null> {
     // validate key
     if (!validateKey(key)) {
       // throw error if key is invalid
@@ -186,8 +207,10 @@ export class SystemKeychain implements IKeychainProvider {
       throw new Error('Invalid key');
     }
     try {
-      // create keychain entry
-      const entity = new Entry(this.packageName, key);
+      // create namespaced key
+      const namespacedKey = this.createNamespacedKey(key, environment);
+      // create keychain entry with 'localkeys' as service and namespaced key as account
+      const entity = new Entry('localkeys', namespacedKey);
       // get password
       return entity.getPassword();
     } catch (error) {
@@ -246,7 +269,7 @@ export class SystemKeychain implements IKeychainProvider {
    * @see {@link list} to list all keys in the keychain (not supported).
    * @see {@link clear} to clear all entries in the keychain (not supported).
    */
-  async delete(key: TKeyChainKey): Promise<void> {
+  async delete(key: TKeyChainKey, environment?: string): Promise<void> {
     // validate key
     if (!validateKey(key)) {
       // throw error if key is invalid
@@ -254,7 +277,9 @@ export class SystemKeychain implements IKeychainProvider {
       throw new Error('Invalid key');
     }
     try {
-      const entity = new Entry(this.packageName, key);
+      // create namespaced key
+      const namespacedKey = this.createNamespacedKey(key, environment);
+      const entity = new Entry('localkeys', namespacedKey);
       entity.deletePassword();
       // Remove from manifest
       await this.manifest.removeKey(this.packageName, key);
@@ -297,7 +322,8 @@ export class SystemKeychain implements IKeychainProvider {
   async set(
     key: TKeyChainKey,
     value: TKeyChainValue,
-    required: boolean = true
+    required: boolean = true,
+    environment?: string
   ): Promise<void> {
     // validate key
     if (!validateKey(key)) {
@@ -312,7 +338,9 @@ export class SystemKeychain implements IKeychainProvider {
       throw new Error('Invalid value');
     }
     try {
-      const entity = new Entry(this.packageName, key);
+      // create namespaced key
+      const namespacedKey = this.createNamespacedKey(key, environment);
+      const entity = new Entry('localkeys', namespacedKey);
       entity.setPassword(value);
       // Add to manifest with required flag
       await this.manifest.addKey(this.packageName, key, required);

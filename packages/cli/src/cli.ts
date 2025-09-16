@@ -6,14 +6,16 @@ import { setAction } from './commands/set.action';
 import { getAction } from './commands/get.action';
 import { delAction } from './commands/del.action';
 import { listAction } from './commands/list.action';
-import { validateAction } from './commands/validate.action';
+import { checkAction } from './commands/check.action';
+import { exportAction } from './commands/export.action';
+import { migrateAction } from './commands/migrate.action';
 import { info, LogTag, verbose, warn } from './utils/logger';
 
 const version = '0.1.0';
 
 // Set up the main program
 program
-  .name('localkeys')
+  .name('lkeys')
   .description('Local-first secret management for developers')
   .version(version)
   .option('-v, --verbose', 'Enable verbose logging')
@@ -49,8 +51,8 @@ program
  * @option -o, --optional - Mark this secret as optional (default: required)
  * @example
  * ```bash
- * localkeys set API_KEY abc123 --verbose
- * localkeys set OPTIONAL_KEY value --optional
+ * lkeys set API_KEY abc123 --verbose
+ * lkeys set OPTIONAL_KEY value --optional
  * ```
  * @remarks
  * This command stores a secret in the OS keychain using the package name from config.
@@ -67,11 +69,12 @@ program
     'Mark this secret as optional (default: required)',
     false
   )
+  .option('-e, --env <environment>', 'Environment name (default: development)')
   .action(
     async (
       key: string,
       value: string,
-      options: { verbose?: boolean; optional?: boolean }
+      options: { verbose?: boolean; optional?: boolean; env?: string }
     ) => {
       await setAction(key, value, options);
     }
@@ -85,7 +88,7 @@ program
  * @option -df, --defaultFallback <value> - Default value if secret not found
  * @example
  * ```bash
- * localkeys get API_KEY --verbose --defaultFallback "default_value"
+ * lkeys get API_KEY --verbose --defaultFallback "default_value"
  * ```
  * @remarks
  * This command retrieves a secret stored in the OS keychain using the package name from config.
@@ -98,10 +101,11 @@ program
   .description('Retrieve a secret from the OS keychain')
   .option('-v, --verbose', 'Enable verbose logging', false)
   .option('-df, --defaultFallback <value>', 'Default value if secret not found')
+  .option('-e, --env <environment>', 'Environment name (default: development)')
   .action(
     async (
       key: string,
-      options: { verbose?: boolean; defaultFallback?: unknown }
+      options: { verbose?: boolean; defaultFallback?: unknown; env?: string }
     ) => {
       await getAction(key, options);
     }
@@ -111,7 +115,8 @@ program
   .command('del <key>')
   .description('Delete a secret from the OS keychain')
   .option('-v, --verbose', 'Enable verbose logging', false)
-  .action(async (key: string, options: { verbose?: boolean }) => {
+  .option('-e, --env <environment>', 'Environment name (default: development)')
+  .action(async (key: string, options: { verbose?: boolean; env?: string }) => {
     await delAction(key, options);
   });
 
@@ -124,12 +129,56 @@ program
   });
 
 program
-  .command('validate')
-  .description('Validate that all required secrets are present')
+  .command('check')
+  .description('Check secrets and security issues')
   .option('-v, --verbose', 'Enable verbose logging', false)
-  .action(async (options: { verbose?: boolean }) => {
-    await validateAction(options);
-  });
+  .option('--secrets', 'Only check secrets')
+  .option('--security', 'Only check security issues')
+  .action(
+    async (options: {
+      verbose?: boolean;
+      secrets?: boolean;
+      security?: boolean;
+    }) => {
+      await checkAction(options);
+    }
+  );
+
+program
+  .command('migrate')
+  .description('Migrate from .env files to LocalKeys')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .option('--auto', 'Auto-accept all prompts')
+  .option('--keep-files', 'Keep .env files after migration')
+  .option('--from <file>', 'Migrate from specific file')
+  .action(
+    async (options: {
+      verbose?: boolean;
+      auto?: boolean;
+      keepFiles?: boolean;
+      from?: string;
+    }) => {
+      await migrateAction(options);
+    }
+  );
+
+program
+  .command('export')
+  .description('Export secrets to .env file (INSECURE)')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .option('--unsafe', 'Confirm you understand the security risks', false)
+  .option('--to <file>', 'Output filename', '.env')
+  .option('-e, --env <environment>', 'Environment to export')
+  .action(
+    async (options: {
+      verbose?: boolean;
+      unsafe?: boolean;
+      to?: string;
+      env?: string;
+    }) => {
+      await exportAction(options);
+    }
+  );
 
 program
   .command('status')
@@ -154,11 +203,18 @@ program.addHelpText(
   'after',
   `
 Examples:
-  $ localkeys status              Show current status
-  $ localkeys init                Initialize in current directory
-  $ localkeys set API_KEY abc123  Store a secret (when implemented)
-  $ localkeys get API_KEY         Retrieve a secret (when implemented)
-  $ localkeys list                List all secrets (when implemented)
+  $ lkeys status                            Show current status
+  $ lkeys init                              Initialize in current directory
+  $ lkeys set API_KEY abc123                Store a secret in default environment (development)
+  $ lkeys set API_KEY xyz789 --env prod     Store a secret in production environment
+  $ lkeys get API_KEY                       Retrieve a secret from development
+  $ lkeys get API_KEY --env production      Retrieve from production environment
+  $ lkeys del API_KEY --env staging         Delete from staging environment
+  $ lkeys list                              List all secrets
+
+Environment Support:
+  Use --env to specify environment (development, staging, production, etc.)
+  Default environment is 'development' if not specified.
 
 Development:
   This is a development build. See .plan/implementation-guidebook.md

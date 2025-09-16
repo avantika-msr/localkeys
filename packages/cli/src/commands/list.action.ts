@@ -27,7 +27,7 @@ export async function listAction(options: ListOptions): Promise<void> {
   // 1. Check if LocalKeys is initialized
   const config = await configManager.load();
   if (!config) {
-    error('LocalKeys not initialized. Run "localkeys init" first.');
+    error('LocalKeys not initialized. Run "lkeys init" first.');
     process.exit(1);
   }
 
@@ -46,7 +46,7 @@ export async function listAction(options: ListOptions): Promise<void> {
 
     if (keys.length === 0) {
       warn(`No secrets found for package "${packageName}"`);
-      info('\nRun "localkeys set <KEY> <value>" to store a secret.');
+      info('\nRun "lkeys set <KEY> <value>" to store a secret.');
     } else {
       info(`\nSecrets for "${packageName}":`);
 

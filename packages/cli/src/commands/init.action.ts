@@ -142,7 +142,7 @@ export async function initAction(options: InitOptions): Promise<void> {
   // 6. Show next steps
   info('\nNext steps:');
   info(`  1. Edit ${templateFile} to define your secrets`);
-  info('  2. Run: localkeys set <KEY> <value>');
-  info('  3. Run: localkeys list');
+  info('  2. Run: lkeys set <KEY> <value>');
+  info('  3. Run: lkeys list');
   info(`  4. Commit .localkeys/ and ${templateFile} to git`);
 }

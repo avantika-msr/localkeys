@@ -122,6 +122,20 @@ export class ConfigManager {
   }
 
   /**
+   * Get default environment
+   *
+   * @returns Default environment name
+   * @throws Error if LocalKeys not initialized
+   */
+  async getDefaultEnvironment(): Promise<string> {
+    const config = await this.load();
+    if (!config) {
+      throw new Error('LocalKeys not initialized. Run "localkeys init" first.');
+    }
+    return config.getDefaultEnvironment();
+  }
+
+  /**
    * Check if LocalKeys is initialized in current project
    *
    * @returns True if config file exists
@@ -157,6 +171,7 @@ export class ConfigManager {
       package: string;
       templateFile: string;
       manifestVersion: string;
+      defaultEnvironment: string;
     }>
   ): Promise<void> {
     const config = await this.load();
@@ -172,6 +187,9 @@ export class ConfigManager {
     }
     if (updates.manifestVersion !== undefined) {
       config.manifestVersion = updates.manifestVersion;
+    }
+    if (updates.defaultEnvironment !== undefined) {
+      config.defaultEnvironment = updates.defaultEnvironment;
     }
 
     await this.save(config);

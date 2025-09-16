@@ -13,6 +13,7 @@ import { error, success, verbose, LogTag } from '../utils/logger';
  */
 export interface DelOptions {
   verbose?: boolean;
+  env?: string;
 }
 
 /**
@@ -33,25 +34,37 @@ export async function delAction(
   // 1. Check if LocalKeys is initialized
   const config = await configManager.load();
   if (!config) {
-    error('LocalKeys not initialized. Run "localkeys init" first.');
+    error('LocalKeys not initialized. Run "lkeys init" first.');
     process.exit(1);
   }
 
   const packageName = config.getPackage();
+  const defaultEnvironment = config.getDefaultEnvironment();
+  const environment = options.env || defaultEnvironment;
+
   verbose(
     options.verbose === true,
     LogTag.LOG,
     `Deleting secret for key: ${key} from package: ${packageName}`
   );
+  verbose(
+    options.verbose === true,
+    LogTag.LOG,
+    `Using environment: ${environment}`
+  );
 
   // 2. Delete secret from keychain (also updates manifest)
-  const keychain = new SystemKeychain(packageName);
+  const keychain = new SystemKeychain(
+    packageName,
+    process.cwd(),
+    defaultEnvironment
+  );
   try {
-    await keychain.delete(key);
+    await keychain.delete(key, options.env);
     verbose(
       options.verbose === true,
       LogTag.SUCCESS,
-      `Deleted secret from keychain: ${key}`
+      `Deleted secret from keychain: ${key} in ${environment}`
     );
   } catch (err) {
     error('Failed to delete secret:', err);
@@ -59,5 +72,7 @@ export async function delAction(
   }
 
   // 3. Show success message
-  success(`Secret "${key}" deleted successfully`);
+  success(
+    `Secret "${key}" deleted successfully from ${environment} environment`
+  );
 }

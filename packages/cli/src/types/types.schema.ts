@@ -164,4 +164,5 @@ export const LocalKeysConfigSchema = z.object({
     .string()
     .min(1, { message: 'Template file path cannot be empty' }),
   manifestVersion: z.string().default('1.0'),
+  defaultEnvironment: z.string().default('development'),
 });

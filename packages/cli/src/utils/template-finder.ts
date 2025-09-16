@@ -41,7 +41,7 @@ export interface TemplateValidationResult {
  * // Find existing templates
  * const files = await finder.findExisting();
  *
- * // Auto-detect best template
+ * // Auto-detect the best template
  * const template = await finder.autoDetect();
  *
  * // Validate custom path

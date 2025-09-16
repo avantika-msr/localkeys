@@ -1,17 +1,48 @@
 {
   "name": "@localkeys/cli",
-  "version": "0.1.0",
-  "description": "LocalKeys CLI - Local-first secret management tool",
+  "version": "0.1.1",
+  "description": "LocalKeys CLI - Local-first secret management tool for storing secrets in OS keychain",
+  "keywords": [
+    "secrets",
+    "environment-variables",
+    "keychain",
+    "security",
+    "cli",
+    "env",
+    "dotenv",
+    "credentials",
+    "password-manager",
+    "macos-keychain",
+    "windows-credential-manager"
+  ],
+  "homepage": "https://github.com/avantika-msr/localkeys#readme",
+  "bugs": {
+    "url": "https://github.com/avantika-msr/localkeys/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avantika-msr/localkeys.git",
+    "directory": "packages/cli"
+  },
   "license": "MIT",
+  "author": {
+    "name": "Avantika",
+    "url": "https://github.com/avantika-msr"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "localkeys": "./dist/cli.js"
+    "lkeys": "./dist/cli.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "tsx watch src/cli.ts",
     "dev:debug": "NODE_OPTIONS='--inspect' tsx watch src/cli.ts",
@@ -29,7 +60,9 @@
     "clean": "rm -rf dist coverage .turbo",
     "clean:dist": "rm -rf dist",
     "clean:deps": "rm -rf node_modules",
-    "validate:build": "node -e \"require('./dist/index.js')\" || echo 'Build validation complete'"
+    "validate:build": "node -e \"require('./dist/index.js')\" || echo 'Build validation complete'",
+    "prepublishOnly": "pnpm run typecheck && pnpm run build",
+    "pack:check": "npm pack --dry-run"
   },
   "dependencies": {
     "@napi-rs/keyring": "1.1.0",

@@ -1,29 +1,109 @@
 /**
  * @module @localkeys/cli/commands
- * @file validate.action.ts
- * @description Implementation of the validate command
+ * @file check.action.ts
+ * @description Implementation of the check command
  */
 
+import fs from 'fs/promises';
+import path from 'path';
 import { SystemKeychain } from '../core';
 import { ConfigManager } from '../core/config/config.manager';
 import { ManifestManager } from '../core/manifest/manifest.manager';
 import { error, success, verbose, warn, info, LogTag } from '../utils/logger';
 
-/**
- * Options for validate command
- */
-export interface ValidateOptions {
-  verbose?: boolean;
+interface SecurityIssue {
+  type: 'error' | 'warning';
+  message: string;
+}
+
+interface SecurityResults {
+  errors: SecurityIssue[];
+  warnings: SecurityIssue[];
+}
+
+async function performSecurityChecks(): Promise<SecurityResults> {
+  const results: SecurityResults = { errors: [], warnings: [] };
+  const cwd = process.cwd();
+
+  // Check for .env files
+  const envFiles = [
+    '.env',
+    '.env.local',
+    '.env.development',
+    '.env.production',
+    '.env.staging',
+    '.env.test',
+  ];
+
+  for (const file of envFiles) {
+    try {
+      await fs.access(path.join(cwd, file));
+      if (file === '.env') {
+        results.errors.push({
+          type: 'error',
+          message: `.env file exists (insecure)`,
+        });
+      } else {
+        results.warnings.push({
+          type: 'warning',
+          message: `${file} file exists`,
+        });
+      }
+    } catch {
+      // File doesn't exist, that's good
+    }
+  }
+
+  // Check .gitignore
+  try {
+    const gitignore = await fs.readFile(path.join(cwd, '.gitignore'), 'utf-8');
+    if (!gitignore.includes('.env')) {
+      results.errors.push({ type: 'error', message: `.env not in .gitignore` });
+    }
+    if (!gitignore.includes('.localkeys/')) {
+      results.warnings.push({
+        type: 'warning',
+        message: `.localkeys/ not in .gitignore`,
+      });
+    }
+  } catch {
+    results.warnings.push({ type: 'warning', message: `.gitignore not found` });
+  }
+
+  return results;
+}
+
+function displaySecurityResults(results: SecurityResults): void {
+  if (results.errors.length === 0 && results.warnings.length === 0) {
+    success('✓ No security issues found');
+    return;
+  }
+
+  results.errors.forEach((issue) => {
+    error(`✗ ${issue.message}`);
+  });
+
+  results.warnings.forEach((issue) => {
+    warn(`! ${issue.message}`);
+  });
 }
 
 /**
- * Validate command action
- * Checks that all required keys exist in the keychain
- * Warns about missing optional keys
+ * Options for check command
+ */
+export interface CheckOptions {
+  verbose?: boolean;
+  secrets?: boolean;
+  security?: boolean;
+}
+
+/**
+ * Check command action
+ * Checks secrets and security issues
  *
  * @param options - Command options
  */
-export async function validateAction(options: ValidateOptions): Promise<void> {
+export async function checkAction(options: CheckOptions): Promise<void> {
   const configManager = new ConfigManager();
   const manifestManager = new ManifestManager();
 
@@ -32,16 +112,35 @@ export async function validateAction(options: ValidateOptions): Promise<void> {
   // 1. Check if LocalKeys is initialized
   const config = await configManager.load();
   if (!config) {
-    error('LocalKeys not initialized. Run "localkeys init" first.');
+    error('LocalKeys not initialized. Run "lkeys init" first.');
     process.exit(1);
   }
 
   const packageName = config.getPackage();
+  const checkSecrets = options.secrets || !options.security;
+  const checkSecurity = options.security || !options.secrets;
+
   verbose(
     options.verbose === true,
     LogTag.LOG,
-    `Validating secrets for package: ${packageName}`
+    `Checking package: ${packageName}`
   );
+
+  info('\nLocalKeys Security Check\n');
+
+  let hasErrors = false;
+
+  // Security checks
+  if (checkSecurity) {
+    const securityIssues = await performSecurityChecks();
+    if (securityIssues.errors.length > 0) hasErrors = true;
+    displaySecurityResults(securityIssues);
+  }
+
+  // Secrets check
+  if (!checkSecrets) {
+    process.exit(hasErrors ? 1 : 0);
+  }
 
   // 2. Get required and optional keys from manifest
   const keychain = new SystemKeychain(packageName);
@@ -116,7 +215,7 @@ export async function validateAction(options: ValidateOptions): Promise<void> {
     error(
       `Validation failed: ${missingRequired.length} required secret(s) missing`
     );
-    info('\nRun "localkeys set <KEY> <value>" to store missing secrets.');
+    info('\nRun "lkeys set <KEY> <value>" to store missing secrets.');
     process.exit(1);
   } else if (missingOptional.length > 0) {
     warn(

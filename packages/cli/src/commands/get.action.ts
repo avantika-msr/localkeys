@@ -14,6 +14,7 @@ import { error, log, verbose, warn, LogTag } from '../utils/logger';
 export interface GetOptions {
   verbose?: boolean;
   defaultFallback?: unknown;
+  env?: string;
 }
 
 /**
@@ -33,21 +34,33 @@ export async function getAction(
   // 1. Check if LocalKeys is initialized
   const config = await configManager.load();
   if (!config) {
-    error('LocalKeys not initialized. Run "localkeys init" first.');
+    error('LocalKeys not initialized. Run "lkeys init" first.');
     process.exit(1);
   }
 
   const packageName = config.getPackage();
+  const defaultEnvironment = config.getDefaultEnvironment();
+  const environment = options.env || defaultEnvironment;
+
   verbose(
     options.verbose === true,
     LogTag.LOG,
     `Getting secret for key: ${key} from package: ${packageName}`
   );
+  verbose(
+    options.verbose === true,
+    LogTag.LOG,
+    `Using environment: ${environment}`
+  );
 
   // 2. Retrieve secret from keychain
-  const keychain = new SystemKeychain(packageName);
+  const keychain = new SystemKeychain(
+    packageName,
+    process.cwd(),
+    defaultEnvironment
+  );
   try {
-    const value = await keychain.get(key);
+    const value = await keychain.get(key, options.env);
 
     // Log the retrieved secret or fallback
     if (value !== null) {
