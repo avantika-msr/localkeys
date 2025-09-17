@@ -7,3 +7,4 @@ export { listAction } from './list.action';
 export { checkAction } from './check.action';
 export { exportAction } from './export.action';
 export { migrateAction } from './migrate.action';
+export { templateAction } from './template.action';
