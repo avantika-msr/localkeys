@@ -1,0 +1,9 @@
+# Example .npmrc for GitHub Packages
+# Copy this to .npmrc and replace TOKEN with your GitHub PAT
+
+# For publishing to GitHub Packages (optional)
+# @localkeys:registry=https://npm.pkg.github.com
+# //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
+
+# For publishing to npm registry (default)
+registry=https://registry.npmjs.org/
