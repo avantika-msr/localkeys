@@ -9,6 +9,7 @@ import { listAction } from './commands/list.action';
 import { checkAction } from './commands/check.action';
 import { exportAction } from './commands/export.action';
 import { migrateAction } from './commands/migrate.action';
+import { templateAction } from './commands/template.action';
 import { info, LogTag, verbose, warn } from './utils/logger';
 
 const version = '0.1.0';
@@ -179,6 +180,15 @@ program
       await exportAction(options);
     }
   );
+
+program
+  .command('template')
+  .description('Generate .env.template from current secrets')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .option('-f, --force', 'Overwrite existing template')
+  .action(async (options: { verbose?: boolean; force?: boolean }) => {
+    await templateAction(options);
+  });
 
 program
   .command('status')
