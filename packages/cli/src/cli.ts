@@ -1,15 +1,21 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { initAction } from './commands/init.action';
-import { setAction } from './commands/set.action';
-import { getAction } from './commands/get.action';
-import { delAction } from './commands/del.action';
-import { listAction } from './commands/list.action';
-import { checkAction } from './commands/check.action';
-import { exportAction } from './commands/export.action';
-import { migrateAction } from './commands/migrate.action';
-import { templateAction } from './commands/template.action';
+import {
+  checkAction,
+  copyAction,
+  delAction,
+  editAction,
+  exportAction,
+  getAction,
+  initAction,
+  listAction,
+  migrateAction,
+  setAction,
+  showAction,
+  templateAction,
+} from './commands';
+
 import { info, LogTag, verbose, warn } from './utils/logger';
 
 const version = '0.1.0';
@@ -189,6 +195,52 @@ program
   .action(async (options: { verbose?: boolean; force?: boolean }) => {
     await templateAction(options);
   });
+
+program
+  .command('edit [key]')
+  .description('Edit secrets interactively')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .option('-e, --env <environment>', 'Environment name')
+  .option('--add', 'Add new secret')
+  .action(
+    async (
+      key: string | undefined,
+      options: { verbose?: boolean; env?: string; add?: boolean }
+    ) => {
+      await editAction(key, options);
+    }
+  );
+
+program
+  .command('show <key>')
+  .description('Show secret value (masked by default)')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .option('-e, --env <environment>', 'Environment name')
+  .option('--reveal', 'Show actual value (unmasked)')
+  .action(
+    async (
+      key: string,
+      options: { verbose?: boolean; env?: string; reveal?: boolean }
+    ) => {
+      await showAction(key, options);
+    }
+  );
+
+program
+  .command('copy [key]')
+  .description('Copy secrets between environments')
+  .requiredOption('--from <environment>', 'Source environment')
+  .requiredOption('--to <environment>', 'Destination environment')
+  .option('-v, --verbose', 'Enable verbose logging', false)
+  .option('-f, --force', 'Overwrite existing secrets')
+  .action(
+    async (
+      key: string | undefined,
+      options: { from: string; to: string; verbose?: boolean; force?: boolean }
+    ) => {
+      await copyAction(key, options);
+    }
+  );
 
 program
   .command('status')

@@ -70,6 +70,11 @@ export class ManifestManager {
    * @param pkg - Package name
    * @param key - Key name to add
    * @param required - Whether the key is required (default: true)
+   *
+   * @remarks
+   * Always updates the package's lastUpdated timestamp to track when
+   * any key was modified, ensuring proper audit trails for security compliance.
+   * This tracks both value changes and metadata changes.
    */
   async addKey(
     pkg: string,
@@ -101,6 +106,12 @@ export class ManifestManager {
     } else if (existingKey.required !== required) {
       // Key exists, update its required status if changed
       existingKey.required = required;
+      packageEntry.lastUpdated = new Date().toISOString();
+      await this.save(manifest);
+    } else {
+      // Key exists with same required status - still update timestamp
+      // This ensures we track when the secret VALUE was last updated,
+      // even if metadata didn't change (important for audit trails)
       packageEntry.lastUpdated = new Date().toISOString();
       await this.save(manifest);
     }

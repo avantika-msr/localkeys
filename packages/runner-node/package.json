@@ -2,13 +2,37 @@
   "name": "@localkeys/runner-node",
   "version": "0.1.0",
   "description": "LocalKeys Node.js runner for injecting secrets",
+  "keywords": [
+    "localkeys",
+    "secrets",
+    "environment-variables",
+    "runtime",
+    "node-runner"
+  ],
+  "homepage": "https://github.com/avantika-msr/localkeys#readme",
+  "bugs": {
+    "url": "https://github.com/avantika-msr/localkeys/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avantika-msr/localkeys.git",
+    "directory": "packages/runner-node"
+  },
   "license": "MIT",
+  "author": {
+    "name": "Avantika",
+    "url": "https://github.com/avantika-msr"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",

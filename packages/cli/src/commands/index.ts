@@ -8,3 +8,6 @@ export { checkAction } from './check.action';
 export { exportAction } from './export.action';
 export { migrateAction } from './migrate.action';
 export { templateAction } from './template.action';
+export { editAction } from './edit.action';
+export { showAction } from './show.action';
+export { copyAction } from './copy.action';
