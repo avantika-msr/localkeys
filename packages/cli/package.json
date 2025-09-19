@@ -1,6 +1,6 @@
 {
   "name": "@localkeys/cli",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "LocalKeys CLI - Local-first secret management tool for storing secrets in OS keychain",
   "keywords": [
     "secrets",
