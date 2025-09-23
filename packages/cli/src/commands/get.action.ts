@@ -4,8 +4,8 @@
  * @description Implementation of the get command
  */
 
-import { SystemKeychain } from '../core';
-import { ConfigManager } from '../core/config/config.manager';
+import { SystemKeychain } from '@localkeys/core';
+import { ConfigManager } from '@localkeys/core';
 import { error, log, verbose, warn, LogTag } from '../utils/logger';
 
 /**

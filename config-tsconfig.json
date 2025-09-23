@@ -6,7 +6,8 @@
     "**/*.config.mjs",
     "vitest.config.ts",
     "vitest.workspace.ts",
+    "packages/core/tsup.config.ts",
     "packages/cli/tsup.config.ts",
-    "packages/runner-node/tsup.config.ts"
+    "packages/node/tsup.config.ts"
   ]
 }

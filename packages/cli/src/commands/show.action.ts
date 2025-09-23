@@ -4,9 +4,9 @@
  * @description Show secrets (with masking by default)
  */
 
-import { SystemKeychain } from '../core';
-import { ConfigManager } from '../core/config/config.manager';
-import { ManifestManager } from '../core/manifest/manifest.manager';
+import { SystemKeychain } from '@localkeys/core';
+import { ConfigManager } from '@localkeys/core';
+import { ManifestManager } from '@localkeys/core';
 import { error, success, verbose, info, LogTag } from '../utils/logger';
 
 export interface ShowOptions {

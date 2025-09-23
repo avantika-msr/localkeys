@@ -9,7 +9,7 @@ import path from 'path';
 import { z } from 'zod';
 import { Manifest, IManifest } from './manifest';
 import { ManifestFactory } from './manifest.factory';
-import { ManifestSchema } from '../../types/types.schema';
+import { ManifestSchema } from '../types/types.schema';
 
 /**
  * Handles file I/O and validation for Manifests

@@ -4,8 +4,8 @@
  * @description Implementation of the del command
  */
 
-import { SystemKeychain } from '../core';
-import { ConfigManager } from '../core/config/config.manager';
+import { SystemKeychain } from '@localkeys/core';
+import { ConfigManager } from '@localkeys/core';
 import { error, success, verbose, LogTag } from '../utils/logger';
 
 /**

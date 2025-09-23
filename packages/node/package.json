@@ -52,6 +52,7 @@
     "validate:build": "node -e \"require('./dist/index.js')\" || echo 'Build validation complete'"
   },
   "dependencies": {
+    "@localkeys/core": "workspace:*",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {

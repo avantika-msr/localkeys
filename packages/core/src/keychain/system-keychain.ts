@@ -35,7 +35,7 @@ import {
   validateValue,
 } from './keychain.validator';
 import { DefaultKeyChainValueSchema } from '../types/types.schema';
-import { ManifestManager } from './manifest/manifest.manager';
+import { ManifestManager } from '../manifest/manifest.manager';
 
 /**
  * IKeychainProvider defines the interface for a keychain provider.

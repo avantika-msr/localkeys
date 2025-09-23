@@ -6,9 +6,9 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import { SystemKeychain } from '../core';
-import { ConfigManager } from '../core/config/config.manager';
-import { ManifestManager } from '../core/manifest/manifest.manager';
+import { SystemKeychain } from '@localkeys/core';
+import { ConfigManager } from '@localkeys/core';
+import { ManifestManager } from '@localkeys/core';
 import { error, success, verbose, warn, info, LogTag } from '../utils/logger';
 
 interface SecurityIssue {

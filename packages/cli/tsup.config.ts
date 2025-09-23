@@ -22,6 +22,7 @@ export default defineConfig({
     '@napi-rs/keyring',
   ],
   noExternal: [
-    // Bundle everything else
+    // Bundle @localkeys/core into the CLI
+    '@localkeys/core',
   ],
 });

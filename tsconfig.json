@@ -5,7 +5,8 @@
   },
   "files": [],
   "references": [
+    { "path": "./packages/core" },
     { "path": "./packages/cli" },
-    { "path": "./packages/runner-node" }
+    { "path": "./packages/node" }
   ]
 }

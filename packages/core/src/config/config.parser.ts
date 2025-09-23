@@ -9,7 +9,7 @@ import path from 'path';
 import { z } from 'zod';
 import { LocalKeysConfig, ILocalKeysConfig } from './config';
 import { ConfigFactory } from './config.factory';
-import { LocalKeysConfigSchema } from '../../types/types.schema';
+import { LocalKeysConfigSchema } from '../types/types.schema';
 
 /**
  * Handles file I/O and validation for LocalKeysConfig

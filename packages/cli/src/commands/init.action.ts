@@ -5,7 +5,7 @@
  */
 
 import fs from 'fs/promises';
-import { ConfigManager } from '../core/config/config.manager';
+import { ConfigManager } from '@localkeys/core';
 import { TemplateFileFinder } from '../utils/template-finder';
 import { error, info, success, warn } from '../utils/logger';
 
