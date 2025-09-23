@@ -1,13 +1,15 @@
 {
-  "name": "@localkeys/runner-node",
+  "name": "@localkeys/node",
   "version": "0.1.0",
-  "description": "LocalKeys Node.js runner for injecting secrets",
+  "description": "LocalKeys Node.js runtime integration for secure secret injection",
   "keywords": [
     "localkeys",
     "secrets",
     "environment-variables",
     "runtime",
-    "node-runner"
+    "node",
+    "nodejs",
+    "sdk"
   ],
   "homepage": "https://github.com/avantika-msr/localkeys#readme",
   "bugs": {
@@ -16,7 +18,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/avantika-msr/localkeys.git",
-    "directory": "packages/runner-node"
+    "directory": "packages/node"
   },
   "license": "MIT",
   "author": {

@@ -11,8 +11,8 @@ export default defineWorkspace([
   {
     extends: './vitest.config.ts',
     test: {
-      name: 'runner-node',
-      root: './packages/runner-node',
+      name: 'node',
+      root: './packages/node',
     },
   },
 ]);

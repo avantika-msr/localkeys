@@ -412,7 +412,7 @@ program
 **Task 3.1: Create runner package structure** (1 hour)
 
 ```bash
-cd packages/runner-node
+cd packages/node
 ```
 
 Create files:
@@ -423,7 +423,7 @@ Create files:
 
 **Task 3.2: Implement secret resolver** (3 hours)
 
-File: `packages/runner-node/src/resolver.ts`
+File: `packages/node/src/resolver.ts`
 
 ```typescript
 import { SystemKeychain } from '@localkeys/cli/core';
@@ -480,7 +480,7 @@ export class SecretResolver {
 
 **Task 3.3: Create preload module** (2 hours)
 
-File: `packages/runner-node/src/preload.ts`
+File: `packages/node/src/preload.ts`
 
 ```typescript
 import { SecretResolver } from './resolver';
@@ -508,7 +508,7 @@ resolver.injectIntoProcessEnv().catch((error) => {
 
 **Task 3.4: Create CLI wrapper** (2 hours)
 
-File: `packages/runner-node/src/index.ts`
+File: `packages/node/src/index.ts`
 
 ```typescript
 #!/usr/bin/env node
@@ -544,7 +544,7 @@ child.on('exit', (code) => {
 
 ```json
 {
-  "name": "@localkeys/runner-node",
+  "name": "@localkeys/node",
   "version": "0.1.0",
   "main": "dist/index.js",
   "bin": {
@@ -568,7 +568,7 @@ child.on('exit', (code) => {
 
 **Task 3.6: Write tests** (1 hour)
 
-Create: `packages/runner-node/__tests__/resolver.test.ts`
+Create: `packages/node/__tests__/resolver.test.ts`
 
 ```typescript
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -823,7 +823,7 @@ Document all features for v0.1.0
 # From packages/cli
 npm publish --access public
 
-# From packages/runner-node
+# From packages/node
 npm publish --access public
 ```
 
@@ -868,12 +868,12 @@ npm publish --access public
 - ✅ Validators
 - ✅ Tests
 
-### Package 2: @localkeys/runner-node
+### Package 2: @localkeys/node
 
 **Exports:**
 
 - ✅ `localkeys-node` CLI wrapper
-- ✅ `--require @localkeys/runner-node/preload` option
+- ✅ `--require @localkeys/node/preload` option
 - ✅ SecretResolver class
 
 **Usage:**
@@ -883,7 +883,7 @@ npm publish --access public
 localkeys-node npm start
 
 # Method 2
-node --require @localkeys/runner-node/preload app.js
+node --require @localkeys/node/preload app.js
 
 # Method 3 (package.json)
 {

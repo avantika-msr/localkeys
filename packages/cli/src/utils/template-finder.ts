@@ -20,7 +20,7 @@ const DEFAULT_TEMPLATE_FILES = [
 /**
  * Validation result for template file paths
  */
-export interface TemplateValidationResult {
+export interface ITemplateValidationResult {
   valid: boolean;
   resolved: string;
   relative: string;
@@ -120,7 +120,7 @@ export class TemplateFileFinder {
    * }
    * ```
    */
-  async validatePath(inputPath: string): Promise<TemplateValidationResult> {
+  async validatePath(inputPath: string): Promise<ITemplateValidationResult> {
     try {
       const exists = await this.pathResolver.exists(inputPath);
 

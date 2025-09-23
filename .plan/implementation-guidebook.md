@@ -88,7 +88,7 @@ pnpm init
 
 # 6. Create directory structure
 mkdir -p packages/cli/src/{commands,core,utils}
-mkdir -p packages/runner-node/src
+mkdir -p packages/node/src
 mkdir -p packages/runner-python/localkeys
 mkdir -p scripts
 mkdir -p docs
@@ -2363,12 +2363,12 @@ Create Node.js runtime that auto-resolves placeholders.
 #### Task 15.1: Setup Runner Package (30 min)
 
 ```bash
-mkdir -p packages/runner-node/src
-cd packages/runner-node
+mkdir -p packages/node/src
+cd packages/node
 
 cat > package.json << 'EOF'
 {
-  "name": "@localkeys/runner-node",
+  "name": "@localkeys/node",
   "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
@@ -2390,7 +2390,7 @@ pnpm install
 
 #### Task 15.2: Implement Preload Script (2 hours)
 
-**File**: `packages/runner-node/src/preload.ts`
+**File**: `packages/node/src/preload.ts`
 
 ```typescript
 import keytar from '@electron/keytar';
@@ -2470,7 +2470,7 @@ Object.defineProperty(process, 'env', {
 console.log('[LocalKeys] Node.js runner initialized');
 ```
 
-**File**: `packages/runner-node/src/index.ts`
+**File**: `packages/node/src/index.ts`
 
 ```typescript
 // Re-export preload for --require usage
@@ -2506,12 +2506,12 @@ localkeys set DATABASE_URL postgresql://localhost/test
 localkeys set API_KEY sk_test_12345
 
 # Run with LocalKeys runner
-node --require @localkeys/runner-node/preload index.js
+node --require @localkeys/node/preload index.js
 ```
 
 #### Task 15.4: Package Script Helper (30 min)
 
-**File**: `packages/runner-node/bin/localkeys-node`
+**File**: `packages/node/bin/localkeys-node`
 
 ```bash
 #!/usr/bin/env node
@@ -2536,7 +2536,7 @@ child.on('exit', (code) => {
 Make executable:
 
 ```bash
-chmod +x packages/runner-node/bin/localkeys-node
+chmod +x packages/node/bin/localkeys-node
 ```
 
 Add to package.json:
@@ -2945,7 +2945,7 @@ require('dotenv').config({ path: '.env.redacted' });
 console.log('NODE:', process.env.TEST_SECRET);
 EOF
 
-node --require @localkeys/runner-node/preload test-node.js | grep "hello_world"
+node --require @localkeys/node/preload test-node.js | grep "hello_world"
 
 # Test Python runner
 echo "5. Testing Python runner..."
@@ -3958,7 +3958,7 @@ Define your secrets schema:
 **Method 1: Preload script**
 
 ```bash
-node --require @localkeys/runner-node/preload app.js
+node --require @localkeys/node/preload app.js
 ```
 
 **Method 2: package.json**
@@ -3966,7 +3966,7 @@ node --require @localkeys/runner-node/preload app.js
 ```json
 {
   "scripts": {
-    "dev": "node --require @localkeys/runner-node/preload src/index.js"
+    "dev": "node --require @localkeys/node/preload src/index.js"
   }
 }
 ```
