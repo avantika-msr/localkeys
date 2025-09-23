@@ -6,4 +6,4 @@
  */
 
 // Re-export all types from @localkeys/core
-export * from '@localkeys/core/types';
+export * from '@localkeys/core';

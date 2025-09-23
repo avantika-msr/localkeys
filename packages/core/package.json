@@ -12,26 +12,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./keychain": {
-      "types": "./dist/keychain/index.d.ts",
-      "import": "./dist/keychain/index.js",
-      "require": "./dist/keychain/index.cjs"
-    },
-    "./manifest": {
-      "types": "./dist/manifest/index.d.ts",
-      "import": "./dist/manifest/index.js",
-      "require": "./dist/manifest/index.cjs"
-    },
-    "./config": {
-      "types": "./dist/config/index.d.ts",
-      "import": "./dist/config/index.js",
-      "require": "./dist/config/index.cjs"
-    },
-    "./types": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/types/index.js",
-      "require": "./dist/types/index.cjs"
     }
   },
   "files": [
@@ -52,6 +32,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.19.22",
+    "@vitest/coverage-v8": "^1.6.1",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3",
     "vitest": "^1.6.1"
