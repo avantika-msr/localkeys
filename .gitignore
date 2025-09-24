@@ -76,4 +76,7 @@ docs/.vitepress/dist/
 *.seed
 *.pid.locktest change
 
+# Other
 .lh/
+/blog/
+/.plan/
