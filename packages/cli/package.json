@@ -30,8 +30,6 @@
     "url": "https://github.com/avantika-msr"
   },
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "bin": {
     "lkeys": "./dist/cli.js"
   },
@@ -60,12 +58,13 @@
     "clean": "rm -rf dist coverage .turbo",
     "clean:dist": "rm -rf dist",
     "clean:deps": "rm -rf node_modules",
-    "validate:build": "node -e \"require('./dist/index.js')\" || echo 'Build validation complete'",
+    "validate:build": "node ./dist/cli.js --version",
     "prepublishOnly": "pnpm run typecheck && pnpm run build",
     "pack:check": "npm pack --dry-run"
   },
   "dependencies": {
     "@localkeys/core": "workspace:*",
+    "@napi-rs/keyring": "1.1.0",
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
     "conf": "^12.0.0",

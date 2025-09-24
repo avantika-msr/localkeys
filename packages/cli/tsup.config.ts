@@ -3,7 +3,6 @@ import { defineConfig } from 'tsup';
 export default defineConfig({
   entry: {
     cli: 'src/cli.ts',
-    index: 'src/index.ts',
   },
   format: ['esm'], // ES modules for modern Node.js
   outExtension: () => ({ js: '.js' }),
@@ -18,7 +17,7 @@ export default defineConfig({
   bundle: true, // Bundle all dependencies for CLI
   platform: 'node',
   external: [
-    // Don't bundle native dependencies
+    // Don't bundle native dependencies - they must be resolved at runtime
     '@napi-rs/keyring',
   ],
   noExternal: [
