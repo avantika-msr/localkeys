@@ -145,10 +145,10 @@ importers:
       '@localkeys/core':
         specifier: workspace:*
         version: link:../core
-      dotenv:
-        specifier: ^16.3.1
-        version: 16.6.1
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.22
       '@vitest/coverage-v8':
         specifier: ^1.2.1
         version: 1.6.1(vitest@1.6.1)
