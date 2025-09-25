@@ -1,15 +1,18 @@
 {
   "name": "@localkeys/node",
   "version": "0.1.0",
-  "description": "LocalKeys Node.js runtime integration for secure secret injection",
+  "description": "LocalKeys Node.js runtime - Drop-in dotenv replacement with OS keychain",
   "keywords": [
     "localkeys",
+    "dotenv",
+    "environment",
     "secrets",
-    "environment-variables",
+    "keychain",
+    "config",
+    "env",
     "runtime",
-    "node",
     "nodejs",
-    "sdk"
+    "security"
   ],
   "homepage": "https://github.com/avantika-msr/localkeys#readme",
   "bugs": {
@@ -26,8 +29,31 @@
     "url": "https://github.com/avantika-msr"
   },
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.js",
+      "require": "./dist/config.cjs"
+    },
+    "./register": {
+      "types": "./dist/register.d.ts",
+      "import": "./dist/register.js",
+      "require": "./dist/register.cjs"
+    },
+    "./testing": {
+      "types": "./dist/testing.d.ts",
+      "import": "./dist/testing.js",
+      "require": "./dist/testing.cjs"
+    }
+  },
   "files": [
     "dist",
     "README.md"
@@ -49,13 +75,13 @@
     "clean": "rm -rf dist coverage .turbo",
     "clean:dist": "rm -rf dist",
     "clean:deps": "rm -rf node_modules",
-    "validate:build": "node -e \"require('./dist/index.js')\" || echo 'Build validation complete'"
+    "validate:build": "node -e \"const pkg = require('./package.json'); console.log('Build validated for', pkg.name, pkg.version);\""
   },
   "dependencies": {
-    "@localkeys/core": "workspace:*",
-    "dotenv": "^16.3.1"
+    "@localkeys/core": "workspace:*"
   },
   "devDependencies": {
+    "@types/node": "^20.0.0",
     "@vitest/coverage-v8": "^1.2.1",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",

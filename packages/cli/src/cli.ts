@@ -278,9 +278,9 @@ Environment Support:
   Use --env to specify environment (development, staging, production, etc.)
   Default environment is 'development' if not specified.
 
-Development:
-  This is a development build. See .plan/implementation-guidebook.md
-  for the full implementation roadmap and current progress.
+Documentation:
+  Visit https://github.com/avantika-msr/localkeys for full documentation,
+  guides, and examples.
 `
 );
 
