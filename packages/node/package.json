@@ -77,10 +77,8 @@
     "clean:deps": "rm -rf node_modules",
     "validate:build": "node -e \"const pkg = require('./package.json'); console.log('Build validated for', pkg.name, pkg.version);\""
   },
-  "dependencies": {
-    "@localkeys/core": "workspace:*"
-  },
   "devDependencies": {
+    "@localkeys/core": "workspace:*",
     "@types/node": "^20.0.0",
     "@vitest/coverage-v8": "^1.2.1",
     "tsup": "^8.0.1",
