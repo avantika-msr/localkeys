@@ -47,68 +47,31 @@ export async function populate(
 export { detectEnvironment } from './config/environment';
 
 /**
- * Main config function (dotenv compatibility)
- * This is a synchronous wrapper that blocks until loading completes
+ * Main config function (async version)
+ * Loads secrets from keychain and injects into process.env
  *
  * @param options - Load options
- * @returns Load result
+ * @returns Promise of load result
  *
  * @example
  * ```typescript
  * import localkeys from '@localkeys/node';
  *
- * // Basic usage
- * const result = localkeys.config();
+ * // Top-level await (ES modules)
+ * const result = await localkeys.config();
  *
- * // With options
- * const result = localkeys.config({
- *   environment: 'production',
- *   debug: true,
- * });
+ * // Or with IIFE
+ * (async () => {
+ *   const result = await localkeys.config({
+ *     environment: 'production',
+ *     debug: true,
+ *   });
+ *   console.log(result);
+ * })();
  * ```
  */
-export function config(options?: LoadOptions): LoadResult {
-  // Use top-level await in a synchronous context
-  // This works because we're in an async module context
-  let result: LoadResult | undefined;
-  let error: Error | undefined;
-
-  // Execute the async load and block until complete
-  (async () => {
-    try {
-      result = await asyncLoad(options);
-    } catch (e) {
-      error = e as Error;
-    }
-  })();
-
-  // Busy-wait for the result (not ideal but necessary for sync API)
-  const start = Date.now();
-  while (result === undefined && error === undefined) {
-    // Wait for async operation to complete
-    // Timeout after 5 seconds to prevent infinite loop
-    if (Date.now() - start > 5000) {
-      throw new Error('Timeout waiting for secrets to load');
-    }
-  }
-
-  if (error) {
-    // Return error result instead of throwing for dotenv compatibility
-    return {
-      success: false,
-      loaded: {},
-      errors: [
-        {
-          key: '',
-          message: error.message,
-          required: false,
-        },
-      ],
-      count: 0,
-    };
-  }
-
-  return result!;
+export async function config(options?: LoadOptions): Promise<LoadResult> {
+  return await asyncLoad(options);
 }
 
 /**

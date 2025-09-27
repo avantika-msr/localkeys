@@ -1,6 +1,6 @@
 {
   "name": "@localkeys/node",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "LocalKeys Node.js runtime - Drop-in dotenv replacement with OS keychain",
   "keywords": [
     "localkeys",
@@ -76,6 +76,9 @@
     "clean:dist": "rm -rf dist",
     "clean:deps": "rm -rf node_modules",
     "validate:build": "node -e \"const pkg = require('./package.json'); console.log('Build validated for', pkg.name, pkg.version);\""
+  },
+  "dependencies": {
+    "@napi-rs/keyring": "1.1.0"
   },
   "devDependencies": {
     "@localkeys/core": "workspace:*",
