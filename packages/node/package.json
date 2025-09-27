@@ -1,6 +1,6 @@
 {
   "name": "@localkeys/node",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "LocalKeys Node.js runtime - Drop-in dotenv replacement with OS keychain",
   "keywords": [
     "localkeys",
