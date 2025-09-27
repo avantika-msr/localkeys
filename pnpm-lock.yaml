@@ -141,11 +141,10 @@ importers:
         version: 1.6.1(@types/node@20.19.22)
 
   packages/node:
-    dependencies:
+    devDependencies:
       '@localkeys/core':
         specifier: workspace:*
         version: link:../core
-    devDependencies:
       '@types/node':
         specifier: ^20.0.0
         version: 20.19.22
