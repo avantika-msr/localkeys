@@ -59,6 +59,7 @@
     "clean:dist": "rm -rf dist",
     "clean:deps": "rm -rf node_modules",
     "validate:build": "node ./dist/cli.js --version",
+    "prepare": "tsup",
     "prepublishOnly": "pnpm run typecheck && pnpm run build",
     "pack:check": "npm pack --dry-run"
   },

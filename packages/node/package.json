@@ -62,6 +62,7 @@
     "access": "public"
   },
   "scripts": {
+    "prepare": "tsup",
     "build": "tsup",
     "build:watch": "tsup --watch",
     "prebuild": "pnpm run clean:dist",
