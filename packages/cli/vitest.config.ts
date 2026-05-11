@@ -11,15 +11,15 @@ export default defineConfig({
       ...baseConfig.test?.coverage,
       exclude: [
         ...(baseConfig.test?.coverage?.exclude || []),
-        'src/cli.ts', // CLI entry point - tested via E2E
-        'src/commands/**', // CLI commands - tested via E2E
+        'src/cli.ts', // CLI entry point — tested via E2E
         'src/examples/**', // Example files
+        // NOTE: src/commands and src/security are now covered by unit tests
       ],
       thresholds: {
-        lines: 10, // TODO: Increase after implementing CLI command tests
-        functions: 0, // TODO: Increase after implementing CLI command tests
-        branches: 0, // TODO: Increase after implementing CLI command tests
-        statements: 10, // TODO: Increase after implementing CLI command tests
+        lines: 60,
+        functions: 50,
+        branches: 50,
+        statements: 60,
       },
     },
   } as typeof baseConfig.test,
