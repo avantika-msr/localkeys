@@ -93,26 +93,57 @@ program
  * @param key - The key of the secret to retrieve
  * @option -v, --verbose - Enable verbose logging
  * @option -df, --defaultFallback <value> - Default value if secret not found
+ * @option --reveal  - Print the full unmasked secret (requires confirmation)
+ * @option --yes    - Skip interactive confirmation when using --reveal
+ * @option --force  - Allow --reveal when stdout is not a TTY (CI pipelines)
  * @example
  * ```bash
- * lkeys get API_KEY --verbose --defaultFallback "default_value"
+ * lkeys get API_KEY                              # masked output (safe default)
+ * lkeys get API_KEY --reveal                     # interactive confirmation, then full value
+ * lkeys get API_KEY --reveal --yes               # skip confirmation (scripting)
+ * lkeys get API_KEY --reveal --force             # allow reveal in non-TTY
+ * lkeys get API_KEY --reveal --yes --force       # fully non-interactive reveal
+ * lkeys get API_KEY --defaultFallback default    # fallback when secret is missing
  * ```
  * @remarks
- * This command retrieves a secret stored in the OS keychain using the package name from config.
- * If the secret is not found, it can return a default fallback value if provided.
+ * By default this command prints a masked value (e.g. `API_KEY=****abcd`) to
+ * avoid leaking secrets through terminal history, CI logs, or screen capture.
+ *
+ * To reveal the full value you must:
+ *  1. Pass --reveal
+ *  2. Confirm interactively (or --yes to skip)
+ *  3. Also pass --force when stdout is not a TTY
  *
  * @see {@link SystemKeychain} for the underlying keychain implementation.
  */
 program
   .command('get <key>')
-  .description('Retrieve a secret from the OS keychain')
+  .description('Retrieve a secret from the OS keychain (masked by default)')
   .option('-v, --verbose', 'Enable verbose logging', false)
   .option('-df, --defaultFallback <value>', 'Default value if secret not found')
   .option('-e, --env <environment>', 'Environment name (default: development)')
+  .option('--reveal', 'Print the full unmasked secret value', false)
+  .option(
+    '--yes',
+    'Skip the interactive confirmation prompt when using --reveal',
+    false
+  )
+  .option(
+    '--force',
+    'Allow --reveal when stdout is not a TTY (e.g. CI pipelines)',
+    false
+  )
   .action(
     async (
       key: string,
-      options: { verbose?: boolean; defaultFallback?: unknown; env?: string }
+      options: {
+        verbose?: boolean;
+        defaultFallback?: string;
+        env?: string;
+        reveal?: boolean;
+        yes?: boolean;
+        force?: boolean;
+      }
     ) => {
       await getAction(key, options);
     }
@@ -217,10 +248,26 @@ program
   .option('-v, --verbose', 'Enable verbose logging', false)
   .option('-e, --env <environment>', 'Environment name')
   .option('--reveal', 'Show actual value (unmasked)')
+  .option(
+    '--yes',
+    'Skip the interactive confirmation prompt when using --reveal',
+    false
+  )
+  .option(
+    '--force',
+    'Allow --reveal when stdout is not a TTY (e.g. CI pipelines)',
+    false
+  )
   .action(
     async (
       key: string,
-      options: { verbose?: boolean; env?: string; reveal?: boolean }
+      options: {
+        verbose?: boolean;
+        env?: string;
+        reveal?: boolean;
+        yes?: boolean;
+        force?: boolean;
+      }
     ) => {
       await showAction(key, options);
     }
@@ -265,14 +312,17 @@ program.addHelpText(
   'after',
   `
 Examples:
-  $ lkeys status                            Show current status
-  $ lkeys init                              Initialize in current directory
-  $ lkeys set API_KEY abc123                Store a secret in default environment (development)
-  $ lkeys set API_KEY xyz789 --env prod     Store a secret in production environment
-  $ lkeys get API_KEY                       Retrieve a secret from development
-  $ lkeys get API_KEY --env production      Retrieve from production environment
-  $ lkeys del API_KEY --env staging         Delete from staging environment
-  $ lkeys list                              List all secrets
+  $ lkeys status                               Show current status
+  $ lkeys init                                 Initialize in current directory
+  $ lkeys set API_KEY abc123                   Store a secret in default environment (development)
+  $ lkeys set API_KEY xyz789 --env prod        Store a secret in production environment
+  $ lkeys get API_KEY                          Retrieve a secret (masked: API_KEY=****abcd)
+  $ lkeys get API_KEY --reveal                 Reveal full secret (interactive confirmation)
+  $ lkeys get API_KEY --reveal --yes           Reveal without prompt (scripting)
+  $ lkeys get API_KEY --reveal --yes --force   Reveal in CI / non-TTY environments
+  $ lkeys get API_KEY --env production         Retrieve from production environment (masked)
+  $ lkeys del API_KEY --env staging            Delete from staging environment
+  $ lkeys list                                 List all secrets
 
 Environment Support:
   Use --env to specify environment (development, staging, production, etc.)

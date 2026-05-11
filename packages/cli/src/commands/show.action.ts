@@ -4,20 +4,20 @@
  * @description Show secrets (with masking by default)
  */
 
-import { SystemKeychain } from '@localkeys/core';
-import { ConfigManager } from '@localkeys/core';
-import { ManifestManager } from '@localkeys/core';
-import { error, success, verbose, info, LogTag } from '../utils/logger';
+import {
+  SystemKeychain,
+  ConfigManager,
+  ManifestManager,
+} from '@localkeys/core';
+import { error, success, verbose, info, LogTag, warn } from '../utils/logger';
+import { partialMask, guardReveal, RevealGuardOptions } from '../security';
 
 export interface ShowOptions {
   verbose?: boolean;
   env?: string;
   reveal?: boolean;
-}
-
-function maskValue(value: string): string {
-  if (value.length <= 4) return '***';
-  return value.slice(0, 2) + '*'.repeat(value.length - 4) + value.slice(-2);
+  yes?: boolean;
+  force?: boolean;
 }
 
 export async function showAction(
@@ -44,6 +44,20 @@ export async function showAction(
     defaultEnvironment
   );
 
+  // Security Gate for reveal
+  if (options.reveal === true) {
+    const guardOpts: RevealGuardOptions = {
+      yes: options.yes === true,
+      force: options.force === true,
+    };
+
+    const approved = await guardReveal(key, guardOpts);
+    if (!approved) {
+      warn('Secret reveal cancelled.');
+      process.exit(1);
+    }
+  }
+
   // Show all secrets
   if (key === 'all' || key === '*') {
     const allKeys = await manifestManager.listKeys(packageName);
@@ -63,7 +77,7 @@ export async function showAction(
       const typeLabel = isRequired ? 'required' : 'optional';
 
       if (value) {
-        const display = options.reveal ? value : maskValue(value);
+        const display = options.reveal ? value : partialMask(value);
         success(`  ${k} (${typeLabel}): ${display}`);
       } else {
         error(`  ${k} (${typeLabel}): <not set>`);
@@ -85,7 +99,7 @@ export async function showAction(
     process.exit(1);
   }
 
-  const display = options.reveal ? value : maskValue(value);
+  const display = options.reveal ? value : partialMask(value);
   info(`${key} (${environment}): ${display}`);
 
   if (!options.reveal) {
